@@ -1,3 +1,7 @@
 export function Dashboard() {
-  return <></>;
+  return (
+    <>
+      <h1>This is the dashboard.</h1>
+    </>
+  );
 }

@@ -9,7 +9,7 @@ export default function App() {
       <Header />
       <div className="flex flex-grow flex-row">
         <Sidebar />
-        <main className="flex-grow">
+        <main className="flex-grow p-4">
           <Outlet />
         </main>
       </div>
