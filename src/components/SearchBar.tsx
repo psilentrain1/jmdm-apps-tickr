@@ -1,8 +1,10 @@
-import { useState } from "react";
 import { MdSearch } from "react-icons/md";
+import { useStore } from "../hooks/useStore";
 
 export function SearchBar() {
-  const [searchInput, setSearchInput] = useState<string>("");
+  const searchInput = useStore((state) => state.searchInput);
+  const setSearchInput = useStore((state) => state.setSearchInput);
+
   return (
     <>
       <form className="flex flex-row items-center justify-center" action="">
