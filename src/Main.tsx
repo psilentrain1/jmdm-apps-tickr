@@ -3,12 +3,17 @@ import ReactDOM from "react-dom/client";
 import { createHashRouter, RouterProvider } from "react-router";
 
 import App from "./App";
+import { Dashboard } from "./views/Dashboard";
 
 const route = createHashRouter([
   {
-    index: true,
-    path: "/",
     element: <App />,
+    children: [
+      {
+        path: "/",
+        element: <Dashboard />,
+      },
+    ],
   },
 ]);
 
