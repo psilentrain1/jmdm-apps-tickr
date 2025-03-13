@@ -1,3 +1,3 @@
 export function Sidebar() {
-  return <div className="w-48 border-1 border-blue-500"></div>;
+  return <div className="w-48 bg-gray-900"></div>;
 }
