@@ -3,17 +3,27 @@ import ReactDOM from "react-dom/client";
 import { createHashRouter, RouterProvider } from "react-router";
 
 import App from "./App";
+import { Dashboard } from "./views/Dashboard";
+import { Settings } from "./views/Settings";
 
 const route = createHashRouter([
   {
-    index: true,
-    path: "/",
     element: <App />,
+    children: [
+      {
+        path: "/",
+        element: <Dashboard />,
+      },
+      {
+        path: "/settings",
+        element: <Settings />,
+      },
+    ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RouterProvider router={route} />
-  </React.StrictMode>
+  </React.StrictMode>,
 );
