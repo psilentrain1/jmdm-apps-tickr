@@ -9,7 +9,9 @@ export function Header() {
         </div>
         <div className="border-1 border-green-500">Tickr</div>
       </div>
-      <div className="flex flex-row justify-center border-1 border-purple-500"></div>
+      <div className="flex flex-grow flex-row justify-center border-1 border-purple-500">
+        Search goes here
+      </div>
     </header>
   );
 }
