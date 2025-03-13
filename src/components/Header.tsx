@@ -13,7 +13,7 @@ export function Header() {
         </div>
       </div>
       <div className="flex flex-grow flex-row justify-center">
-        <div className="border-1 border-purple-500">
+        <div className="flex flex-row items-center justify-center">
           <SearchBar />
         </div>
       </div>
