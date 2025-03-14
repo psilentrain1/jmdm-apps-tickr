@@ -27,4 +27,4 @@
  */
 
 import "./index.css";
-import "./Main";
+import "./routes";
