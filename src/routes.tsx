@@ -4,6 +4,7 @@ import { createHashRouter, RouterProvider } from "react-router";
 
 import App from "./App";
 import { Dashboard } from "./views/Dashboard";
+import { Watchlist } from "./views/Watchlist";
 import { Settings } from "./views/Settings";
 
 const route = createHashRouter([
@@ -13,6 +14,10 @@ const route = createHashRouter([
       {
         path: "/",
         element: <Dashboard />,
+      },
+      {
+        path: "/watchlist",
+        element: <Watchlist />,
       },
       {
         path: "/settings",

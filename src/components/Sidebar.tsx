@@ -1,4 +1,4 @@
-import { MdDashboard, MdSettings } from "react-icons/md";
+import { MdDashboard, MdListAlt, MdSettings } from "react-icons/md";
 import { NavLink } from "react-router";
 
 export function Sidebar() {
@@ -25,6 +25,16 @@ function Navigation() {
                 <MdDashboard />
               </span>
               Dashboard
+            </li>
+          )}
+        </NavLink>
+        <NavLink to="/watchlist">
+          {({ isActive }) => (
+            <li className={isActive ? liActiveClass : liClass}>
+              <span className={iconClass}>
+                <MdListAlt />
+              </span>
+              Watchlist
             </li>
           )}
         </NavLink>
