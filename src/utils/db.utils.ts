@@ -92,3 +92,10 @@ export function addTickerInfo(tickerInfo: Ticker) {
 
   return result;
 }
+
+export function searchDB(searchParam: string) {
+  const query = `SELECT * FROM ticker WHERE ticker LIKE '${searchParam}' OR ticker_name LIKE '${searchParam}' OR industry LIKE '${searchParam}' OR sector LIKE '${searchParam}';`;
+  console.log("Search query: ", query);
+  const result = db.prepare(query).all();
+  return result;
+}
