@@ -3,16 +3,16 @@ import fs from "fs";
 import path from "path";
 import sqlite from "better-sqlite3";
 import { Ticker } from "../types/api.types";
-import { dbLoc } from "../index";
+import { dbLoc, db } from "../index";
 import { getAPITickerInfo } from "./api.utils";
 
-// Create the database connection
-const db = new sqlite(dbLoc);
-
 export function createDB() {
-  fs.mkdirSync(path.join(app.getPath("appData"), "tickr"), { recursive: true });
+  //   const filepath = path.join(app.getPath("appData"), "Tickr");
+  //   fs.mkdirSync(filepath, { recursive: true });
+  //   fs.closeSync(fs.openSync(dbLoc, "w"));
 
   db.pragma("journal_mode = WAL");
+  console.log("New Database: ", db);
 
   const query1 = `CREATE TABLE db (
     db_key TEXT PRIMARY KEY NOT NULL,
@@ -32,18 +32,30 @@ export function createDB() {
     cached_date TEXT
     );`;
 
-  const query4 = `CREATE TABLE settings (
+  const query4 = `CREATE TABLE data_cache (
+    data_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ticker TEXT NOT NULL,
+    date TEXT NOT NULL,
+    close REAL,
+    volume INTEGER,
+    open REAL,
+    high REAL,
+    low REAL
+    );`;
+
+  const query5 = `CREATE TABLE settings (
     setting_key TEXT PRIMARY KEY NOT NULL,
     setting_value TEXT
     );`;
 
-  const query5 = `INSERT INTO settings (setting_key, setting_value) VALUES ('watched_symbols', '[]');`;
+  const query6 = `INSERT INTO settings (setting_key, setting_value) VALUES ('watched_symbols', '[]');`;
 
   db.prepare(query1).run();
   db.prepare(query2).run();
   db.prepare(query3).run();
   db.prepare(query4).run();
   db.prepare(query5).run();
+  db.prepare(query6).run();
   console.log("Database created at: ", dbLoc);
 }
 
