@@ -12,6 +12,8 @@ contextBridge.exposeInMainWorld("appInfo", {
   getAppVersion: () => ipcRenderer.invoke("getAppVersion"),
 });
 
-contextBridge.exposeInMainWorld("api", {});
+contextBridge.exposeInMainWorld("api", {
+  search: (searchParam: string) => ipcRenderer.invoke("search", searchParam),
+});
 
 contextBridge.exposeInMainWorld("settings", {});

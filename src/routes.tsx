@@ -6,6 +6,7 @@ import App from "./App";
 import { Dashboard } from "./views/Dashboard";
 import { Watchlist } from "./views/Watchlist";
 import { Settings } from "./views/Settings";
+import { SearchResults } from "./views/SearchResults";
 
 const route = createHashRouter([
   {
@@ -22,6 +23,10 @@ const route = createHashRouter([
       {
         path: "/settings",
         element: <Settings />,
+      },
+      {
+        path: "/search/:param",
+        element: <SearchResults />,
       },
     ],
   },
