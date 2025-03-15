@@ -52,8 +52,8 @@ export function createDB() {
 
 // Get Ticker Info
 export function getTickerInfo(symbol: string) {
-  const query = `SELECT * FROM symbol WHERE symbol = ${symbol};`;
-  const result = db.prepare(query).all();
+  const query = `SELECT * FROM symbol WHERE symbol = ?;`;
+  const result = db.prepare(query).all(symbol);
 
   if (result.length === 0) {
     // Get the ticker info from the API
@@ -82,8 +82,10 @@ export function addTickerInfo(tickerInfo: Ticker) {
 }
 
 export function searchDB(searchParam: string) {
-  const query = `SELECT * FROM ticker WHERE ticker LIKE '%${searchParam}%' OR ticker_name LIKE '%${searchParam}%' OR industry LIKE '%${searchParam}%' OR sector LIKE '%${searchParam}%';`;
+  const query = `SELECT * FROM ticker WHERE ticker LIKE '%@searchParam%' OR ticker_name LIKE '%@searchParam%' OR industry LIKE '%@searchParam%' OR sector LIKE '%@searchParam%';`;
   console.log("Search query: ", query);
-  const result = db.prepare(query).all();
+  const result = db.prepare(query).all({
+    searchParam: searchParam,
+  });
   return result;
 }
