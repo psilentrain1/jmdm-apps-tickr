@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, IpcMainInvokeEvent } from "electron";
 import packageInfo from "../package.json";
 import path from "path";
 import fs from "fs";
@@ -38,9 +38,21 @@ const createWindow = (): void => {
   // mainWindow.webContents.openDevTools();
 };
 
+// appInfo funcs
 ipcMain.handle("getAppVersion", () => {
   return packageInfo.version;
 });
+
+// API funcs
+ipcMain.handle(
+  "search",
+  async (event: IpcMainInvokeEvent, searchParam: string) => {
+    console.log("search: ", searchParam);
+    return "Your search result!";
+  },
+);
+
+// Settings funcs
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
