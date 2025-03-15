@@ -9,8 +9,12 @@ import { createDB } from "./utils/db.utils";
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
-export const dbLoc = path.join(app.getPath("appData"), "tickr", "tickr.db");
-// export const dbLoc = path.join(__dirname, "store", "tickr.db");
+// export const dbLoc = path.join(app.getPath("appData"), "Tickr", "tickr.db");
+export const dbLoc = path.join(
+  "/Users/psilentrain1/Documents/development/jmdm-apps-tickr/src",
+  "store",
+  "tickr.db",
+);
 console.log("Database location: ", dbLoc);
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
