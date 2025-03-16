@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 export function Footer() {
   return (
-    <footer className="bg-gray-900 p-2 text-center text-sm">
+    <footer className="fixed right-0 bottom-0 left-0 bg-gray-900 p-2 text-center text-sm">
       &copy;2025 James Drake Tech. All rights reserved.{" "}
       <Link
         className="underline transition-colors duration-300 ease-in-out hover:text-blue-500"

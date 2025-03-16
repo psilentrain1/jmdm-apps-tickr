@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 
 export function Sidebar() {
   return (
-    <div className="w-48 bg-gray-900">
+    <div className="fixed h-full w-48 bg-gray-900 pt-11 pb-9">
       <Navigation />
     </div>
   );
