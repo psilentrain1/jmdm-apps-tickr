@@ -94,10 +94,21 @@ export function addTickerInfo(tickerInfo: Ticker) {
 }
 
 export function searchDB(searchParam: string) {
-  const query = `SELECT * FROM ticker WHERE ticker LIKE '%@searchParam%' OR ticker_name LIKE '%@searchParam%' OR industry LIKE '%@searchParam%' OR sector LIKE '%@searchParam%';`;
-  console.log("Search query: ", query);
-  const result = db.prepare(query).all({
+  /* const stmt = db.prepare(
+    `SELECT * FROM ticker WHERE ticker LIKE @searchParam OR ticker_name LIKE @searchParam OR industry LIKE @searchParam OR sector LIKE @searchParam;`,
+  );
+  const result = stmt.all({
     searchParam: searchParam,
-  });
+  }); */
+  const stmt = db.prepare(
+    "SELECT * FROM ticker WHERE ticker LIKE ? OR ticker_name LIKE ? OR industry LIKE ? OR sector LIKE ?;",
+  );
+  const result = stmt.all(
+    `%${searchParam}%`,
+    `%${searchParam}%`,
+    `%${searchParam}%`,
+    `%${searchParam}%`,
+  );
+
   return result;
 }
