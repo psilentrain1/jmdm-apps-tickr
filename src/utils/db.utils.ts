@@ -64,8 +64,8 @@ export function createDB() {
 
 // Get Ticker Info
 export function getTickerInfo(symbol: string) {
-  const query = `SELECT * FROM symbol WHERE symbol = ${symbol};`;
-  const result = db.prepare(query).all();
+  const query = `SELECT * FROM symbol WHERE symbol = ?;`;
+  const result = db.prepare(query).all(symbol);
 
   if (result.length === 0) {
     // Get the ticker info from the API
@@ -89,6 +89,26 @@ export function addTickerInfo(tickerInfo: Ticker) {
       tickerInfo.description,
       new Date().toISOString(),
     );
+
+  return result;
+}
+
+export function searchDB(searchParam: string) {
+  /* const stmt = db.prepare(
+    `SELECT * FROM ticker WHERE ticker LIKE @searchParam OR ticker_name LIKE @searchParam OR industry LIKE @searchParam OR sector LIKE @searchParam;`,
+  );
+  const result = stmt.all({
+    searchParam: searchParam,
+  }); */
+  const stmt = db.prepare(
+    "SELECT * FROM ticker WHERE ticker LIKE ? OR ticker_name LIKE ? OR industry LIKE ? OR sector LIKE ?;",
+  );
+  const result = stmt.all(
+    `%${searchParam}%`,
+    `%${searchParam}%`,
+    `%${searchParam}%`,
+    `%${searchParam}%`,
+  );
 
   return result;
 }
