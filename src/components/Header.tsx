@@ -3,7 +3,7 @@ import { SearchBar } from "./SearchBar";
 
 export function Header() {
   return (
-    <header className="flex h-11 flex-row bg-gray-900 px-4">
+    <header className="fixed top-0 right-0 left-0 z-10 flex h-11 flex-row bg-gray-900 px-4">
       <div className="flex flex-row">
         <div className="flex flex-row items-center justify-center text-3xl">
           <MdMenuOpen />
