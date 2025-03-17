@@ -1,8 +1,13 @@
-import { Ticker } from "./api.types";
+import { Ticker, Prices } from "./api.types";
+import { DateRange } from "./component.types";
 
 export interface State {
   searchInput: string;
   setSearchInput: (newSearchInput: string) => void;
   searchResults: Ticker[];
   setSearchResults: (newSearchResults: Ticker[]) => void;
+  tickerChartData: Prices[];
+  setTickerChartData: (newTickerChartData: Prices[]) => void;
+  tickerChartTimeRange: DateRange;
+  setTickerChartTimeRange: (newTickerChartTimeRange: DateRange) => void;
 }
