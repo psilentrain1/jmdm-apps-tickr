@@ -8,3 +8,13 @@ export interface Ticker {
   description: string;
   cached_date: string;
 }
+
+export interface Prices {
+  ticker: string;
+  date: string;
+  close: number;
+  volume: number;
+  open: number;
+  high: number;
+  low: number;
+}

@@ -7,4 +7,11 @@ export const useStore = create<State>((set) => ({
   searchResults: [],
   setSearchResults: (newSearchResults) =>
     set({ searchResults: newSearchResults }),
+  // Charts
+  tickerChartData: [],
+  setTickerChartData: (newTickerChartData) =>
+    set({ tickerChartData: newTickerChartData }),
+  tickerChartTimeRange: "1y",
+  setTickerChartTimeRange: (newTickerChartTimeRange) =>
+    set({ tickerChartTimeRange: newTickerChartTimeRange }),
 }));

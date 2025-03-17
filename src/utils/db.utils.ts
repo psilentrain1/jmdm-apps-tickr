@@ -5,6 +5,7 @@ import sqlite from "better-sqlite3";
 import { Ticker } from "../types/api.types";
 import { dbLoc, db } from "../index";
 import { getAPITickerInfo } from "./api.utils";
+import { DateRange } from "../types/component.types";
 
 export function createDB() {
   //   const filepath = path.join(app.getPath("appData"), "Tickr");
@@ -110,5 +111,39 @@ export function searchDB(searchParam: string) {
     `%${searchParam}%`,
   );
 
+  return result;
+}
+
+export function getDBPrices(ticker: string, dateRange: DateRange) {
+  let returnLimit: number;
+  switch (dateRange) {
+    case "1d":
+      returnLimit = 1;
+      break;
+    case "5d":
+      returnLimit = 5;
+      break;
+    case "1m":
+      returnLimit = 20;
+      break;
+    case "3m":
+      returnLimit = 60;
+      break;
+    case "6m":
+      returnLimit = 122;
+      break;
+    case "1y":
+      returnLimit = 260;
+      break;
+    default:
+      returnLimit = 260;
+      break;
+  }
+
+  const stmt = db.prepare(
+    "SELECT * FROM (SELECT * FROM data_cache WHERE ticker = ? ORDER BY date DESC LIMIT ?) ORDER BY date ASC;",
+  );
+
+  const result = stmt.all(ticker, returnLimit);
   return result;
 }
