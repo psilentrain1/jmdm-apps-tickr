@@ -36,15 +36,16 @@ export function TickerChart({ ticker }: { ticker: string }) {
   const setTickerChartData = useStore((state) => state.setTickerChartData);
 
   async function getPrices() {
-    const prices = await window.api?.getPrices(ticker);
+    const prices = await window.api?.getPrices(ticker, tickerChartTimeRange);
     if (prices) {
       setTickerChartData(prices);
     }
   }
 
   useEffect(() => {
+    console.log(tickerChartTimeRange);
     getPrices();
-  }, []);
+  }, [tickerChartTimeRange]);
 
   const options = {
     responsive: true,
@@ -110,7 +111,7 @@ Volume: ${tickerChartData[context[0].dataIndex].volume}`;
               setTickerChartTimeRange(e.target.value as DateRange);
             }}
           >
-            <option value="1d">1 Day</option>
+            {/* <option value="1d">1 Day</option> */}
             <option value="5d">5 Days</option>
             <option value="1m">1 Month</option>
             <option value="3m">3 Months</option>
