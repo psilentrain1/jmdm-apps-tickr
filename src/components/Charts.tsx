@@ -98,22 +98,26 @@ Volume: ${tickerChartData[context[0].dataIndex].volume}`;
 
   return (
     <div>
-      <div>
-        <select
-          name="dateRangeSelect"
-          id="dateRangeSelect"
-          value={tickerChartTimeRange}
-          onChange={(e) => {
-            setTickerChartTimeRange(e.target.value as DateRange);
-          }}
-        >
-          <option value="1d">1 Day</option>
-          <option value="5d">5 Days</option>
-          <option value="1m">1 Month</option>
-          <option value="3m">3 Months</option>
-          <option value="6m">6 Months</option>
-          <option value="1y">1 Year</option>
-        </select>
+      <div className="flex w-full flex-row items-center justify-end">
+        <div>
+          <label htmlFor="dateRangeSelect">Date Range: </label>
+          <select
+            className="focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            name="dateRangeSelect"
+            id="dateRangeSelect"
+            value={tickerChartTimeRange}
+            onChange={(e) => {
+              setTickerChartTimeRange(e.target.value as DateRange);
+            }}
+          >
+            <option value="1d">1 Day</option>
+            <option value="5d">5 Days</option>
+            <option value="1m">1 Month</option>
+            <option value="3m">3 Months</option>
+            <option value="6m">6 Months</option>
+            <option value="1y">1 Year</option>
+          </select>
+        </div>
       </div>
       <Line options={options} data={data} />
     </div>
