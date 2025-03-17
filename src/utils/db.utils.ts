@@ -112,3 +112,12 @@ export function searchDB(searchParam: string) {
 
   return result;
 }
+
+export function getDBPrices(ticker: string) {
+  const stmt = db.prepare(
+    "SELECT * FROM data_cache WHERE ticker = ? ORDER BY date DESC;",
+  );
+
+  const result = stmt.all(ticker);
+  return result;
+}
