@@ -65,14 +65,19 @@ export function createDB() {
 
 // Get Ticker Info
 export function getTickerInfo(symbol: string) {
-  const query = `SELECT * FROM symbol WHERE symbol = ?;`;
-  const result = db.prepare(query).all(symbol);
+  const stmtTicker = db.prepare(`SELECT * FROM ticker WHERE ticker = ?;`);
+  const stmtLastClose = db.prepare(
+    `SELECT * FROM (SELECT * FROM data_cache WHERE ticker = ? ORDER BY date DESC LIMIT 2) ORDER BY date ASC;`,
+  );
+  const ticker = stmtTicker.all(symbol);
+  const lastClose = stmtLastClose.all(symbol);
 
-  if (result.length === 0) {
+  if (ticker.length === 0) {
     // Get the ticker info from the API
     getAPITickerInfo(symbol);
   } else {
     // Return the ticker info from the DB
+    return ticker.concat(lastClose);
   }
 }
 

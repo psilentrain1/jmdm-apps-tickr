@@ -1,7 +1,11 @@
-import { Ticker, Prices } from "./api.types";
-import { DateRange } from "./component.types";
+import { Ticker, Prices, TickerInfo } from "./api.types";
+import { DateRange, GainLoss } from "./component.types";
 
 export interface State {
+  tickerInfo: TickerInfo;
+  setTickerInfo: (newTickerInfo: TickerInfo) => void;
+  gainLoss: GainLoss;
+  setGainLoss: (newGainLoss: GainLoss) => void;
   searchInput: string;
   setSearchInput: (newSearchInput: string) => void;
   searchResults: Ticker[];
