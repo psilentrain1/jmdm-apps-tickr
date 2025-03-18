@@ -100,12 +100,6 @@ export function addTickerInfo(tickerInfo: Ticker) {
 }
 
 export function searchDB(searchParam: string) {
-  /* const stmt = db.prepare(
-    `SELECT * FROM ticker WHERE ticker LIKE @searchParam OR ticker_name LIKE @searchParam OR industry LIKE @searchParam OR sector LIKE @searchParam;`,
-  );
-  const result = stmt.all({
-    searchParam: searchParam,
-  }); */
   const stmt = db.prepare(
     "SELECT * FROM ticker WHERE ticker LIKE ? OR ticker_name LIKE ? OR industry LIKE ? OR sector LIKE ?;",
   );
@@ -150,5 +144,25 @@ export function getDBPrices(ticker: string, dateRange: DateRange) {
   );
 
   const result = stmt.all(ticker, returnLimit);
+  return result;
+}
+
+// Watchlist
+export function getWatchlistDB() {
+  const stmt = db.prepare(
+    "SELECT setting_value FROM settings WHERE setting_key = watched_tickers;",
+  );
+
+  const result = stmt.get();
+  const list = result.split(",");
+  return list;
+}
+
+export function setWatchlistDB(watchlist: string[]) {
+  const stmt = db.prepare(
+    "UPDATE settings SET setting_value = ? WHERE setting_key = watched_tickers;",
+  );
+
+  const result = stmt.run(watchlist.join(","));
   return result;
 }

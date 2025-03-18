@@ -5,6 +5,7 @@ declare global {
   interface Window {
     appInfo: any;
     api: any;
+    watchlist: any;
     settings: any;
   }
 }
@@ -19,6 +20,12 @@ contextBridge.exposeInMainWorld("api", {
     ipcRenderer.invoke("getTickerInfo", ticker),
   getPrices: (ticker: string, dateRange: DateRange) =>
     ipcRenderer.invoke("getPrices", ticker, dateRange),
+});
+
+contextBridge.exposeInMainWorld("watchlist", {
+  getWatchlist: () => ipcRenderer.invoke("getWatchlist"),
+  setWatchlist: (watchlist: string[]) =>
+    ipcRenderer.invoke("setWatchlist", watchlist),
 });
 
 contextBridge.exposeInMainWorld("settings", {});
