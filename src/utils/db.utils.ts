@@ -150,17 +150,17 @@ export function getDBPrices(ticker: string, dateRange: DateRange) {
 // Watchlist
 export function getWatchlistDB() {
   const stmt = db.prepare(
-    "SELECT setting_value FROM settings WHERE setting_key = watched_tickers;",
+    "SELECT setting_value FROM settings WHERE setting_key = 'watched_tickers';",
   );
 
   const result = stmt.get();
-  const list = result.split(",");
+  const list = result.setting_value.split(",");
   return list;
 }
 
 export function setWatchlistDB(watchlist: string[]) {
   const stmt = db.prepare(
-    "UPDATE settings SET setting_value = ? WHERE setting_key = watched_tickers;",
+    "UPDATE settings SET setting_value = ? WHERE setting_key = 'watched_tickers';",
   );
 
   const result = stmt.run(watchlist.join(","));
