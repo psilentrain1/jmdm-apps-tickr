@@ -54,6 +54,10 @@ export function Ticker() {
       <div>
         <TickerChart ticker={ticker} />
       </div>
+      <div>
+        <h2 className="font-bold">Description:</h2>
+        <p>{tickerInfo[0].description}</p>
+      </div>
     </>
   );
 }
