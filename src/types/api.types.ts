@@ -18,3 +18,5 @@ export interface Prices {
   high: number;
   low: number;
 }
+
+export type TickerInfo = [Ticker, Prices, Prices];

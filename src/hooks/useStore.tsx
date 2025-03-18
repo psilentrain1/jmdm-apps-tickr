@@ -2,6 +2,39 @@ import { create } from "zustand";
 import { State } from "../types/state.types";
 
 export const useStore = create<State>((set) => ({
+  // Ticker Info
+  tickerInfo: [
+    {
+      ticker_id: 0,
+      ticker: "",
+      ticker_type: "",
+      ticker_name: "",
+      industry: "",
+      sector: "",
+      description: "",
+      cached_date: "",
+    },
+    {
+      ticker: "",
+      date: "",
+      close: 0,
+      volume: 0,
+      open: 0,
+      high: 0,
+      low: 0,
+    },
+    {
+      ticker: "",
+      date: "",
+      close: 0,
+      volume: 0,
+      open: 0,
+      high: 0,
+      low: 0,
+    },
+  ],
+  setTickerInfo: (newTickerInfo) => set({ tickerInfo: newTickerInfo }),
+  // Search
   searchInput: "",
   setSearchInput: (newSearchInput) => set({ searchInput: newSearchInput }),
   searchResults: [],

@@ -1,7 +1,9 @@
-import { Ticker, Prices } from "./api.types";
+import { Ticker, Prices, TickerInfo } from "./api.types";
 import { DateRange } from "./component.types";
 
 export interface State {
+  tickerInfo: TickerInfo;
+  setTickerInfo: (newTickerInfo: TickerInfo) => void;
   searchInput: string;
   setSearchInput: (newSearchInput: string) => void;
   searchResults: Ticker[];
