@@ -2,7 +2,13 @@ import { app } from "electron";
 import fs from "fs";
 import path from "path";
 import sqlite from "better-sqlite3";
-import { Setting, Ticker } from "../types/api.types";
+import {
+  Prices,
+  Setting,
+  Ticker,
+  TickerInfo,
+  Watchlist,
+} from "../types/api.types";
 import { dbLoc, db } from "../index";
 import { getAPITickerInfo } from "./api.utils";
 import { DateRange } from "../types/component.types";
@@ -64,21 +70,21 @@ export function createDB() {
 // Maybe check against DB version and check tables
 
 // Get Ticker Info
-export function getTickerInfo(symbol: string) {
+export function getTickerInfo(symbol: string): TickerInfo | null {
   const stmtTicker = db.prepare(`SELECT * FROM ticker WHERE ticker = ?;`);
   const stmtLastClose = db.prepare(
     `SELECT * FROM (SELECT * FROM data_cache WHERE ticker = ? ORDER BY date DESC LIMIT 2) ORDER BY date ASC;`,
   );
-  const ticker = stmtTicker.all(symbol);
-  const lastClose = stmtLastClose.all(symbol);
+  const ticker = stmtTicker.get(symbol) as Ticker | undefined;
+  const lastClose = stmtLastClose.all(symbol) as Prices[];
 
-  if (ticker.length === 0) {
-    // Get the ticker info from the API
+  if (!ticker || lastClose.length < 2) {
+    // If not found, fetch from API or return null
     getAPITickerInfo(symbol);
-  } else {
-    // Return the ticker info from the DB
-    return ticker.concat(lastClose);
+    return null;
   }
+
+  return [ticker, lastClose[0], lastClose[1]];
 }
 
 // Add Ticker Info
@@ -155,7 +161,14 @@ export function getWatchlistDB() {
 
   const result = stmt.get() as Setting;
   const list = result.setting_value.split(",");
-  return list;
+  const watchedTickers: Watchlist = {};
+  list.forEach((ticker) => {
+    const tickerInfo: TickerInfo = getTickerInfo(ticker);
+    if (tickerInfo) {
+      watchedTickers[ticker] = tickerInfo;
+    }
+  });
+  return watchedTickers;
 }
 
 export function setWatchlistDB(watchlist: string[]) {
