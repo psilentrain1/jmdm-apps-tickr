@@ -19,7 +19,7 @@ export interface Prices {
   low: number;
 }
 
-export type TickerInfo = [Ticker, Prices, Prices];
+export type TickerInfo = [Ticker, Prices, boolean, number, number];
 
 export interface Setting {
   setting_value: string;

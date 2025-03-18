@@ -8,10 +8,10 @@ export function Ticker() {
   const { ticker } = useParams();
   const tickerInfo = useStore((state) => state.tickerInfo);
   const setTickerInfo = useStore((state) => state.setTickerInfo);
-  const gainLoss = useStore((state) => state.gainLoss);
-  const setGainLoss = useStore((state) => state.setGainLoss);
+  // const gainLoss = useStore((state) => state.gainLoss);
+  // const setGainLoss = useStore((state) => state.setGainLoss);
 
-  function calcGainLoss(a: number, b: number) {
+  /* function calcGainLoss(a: number, b: number) {
     let gain: boolean;
     if (a > b) {
       gain = true;
@@ -23,7 +23,7 @@ export function Ticker() {
     const percent = (Math.abs(a - b) / ((a + b) / 2)) * 100;
 
     return { gain, diff, percent };
-  }
+  } */
 
   async function getTickerInfo() {
     setTickerInfo(await window.api?.getTickerInfo(ticker));
@@ -33,9 +33,9 @@ export function Ticker() {
     getTickerInfo();
   }, []);
 
-  useEffect(() => {
+  /*  useEffect(() => {
     setGainLoss(calcGainLoss(tickerInfo[2].close, tickerInfo[1].close));
-  }, [tickerInfo]);
+  }, [tickerInfo]); */
 
   return (
     <>
@@ -56,7 +56,7 @@ export function Ticker() {
 
         <div>
           <div className="flex flex-row items-center text-2xl font-bold">
-            {gainLoss.gain ? (
+            {tickerInfo[2] ? (
               <span className="text-4xl text-green-600">
                 <MdArrowDropUp />
               </span>
@@ -66,23 +66,23 @@ export function Ticker() {
               </span>
             )}
             {"$"}
-            {tickerInfo[2].close.toFixed(2)}
+            {tickerInfo[1].close.toFixed(2)}
           </div>
           <div className="flex flex-row justify-between">
-            <span>{gainLoss.diff.toFixed(2)}</span>
+            <span>{tickerInfo[3].toFixed(2)}</span>
             <span>
-              {gainLoss.gain ? "+" : "-"}
-              {gainLoss.percent.toFixed(2)}%
+              {tickerInfo[2] ? "+" : "-"}
+              {tickerInfo[4].toFixed(2)}%
             </span>
           </div>
         </div>
       </div>
       <div className="flex flex-row justify-between pb-4">
-        <span>Open: ${tickerInfo[2].open}</span>
-        <span>High: ${tickerInfo[2].high}</span>
-        <span>Low: ${tickerInfo[2].low}</span>
-        <span>Close: ${tickerInfo[2].close}</span>
-        <span>Volume: {tickerInfo[2].volume}</span>
+        <span>Open: ${tickerInfo[1].open}</span>
+        <span>High: ${tickerInfo[1].high}</span>
+        <span>Low: ${tickerInfo[1].low}</span>
+        <span>Close: ${tickerInfo[1].close}</span>
+        <span>Volume: {tickerInfo[1].volume}</span>
       </div>
       <div>
         <TickerChart ticker={ticker} />
