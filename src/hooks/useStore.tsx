@@ -40,12 +40,14 @@ export const useStore = create<State>((set) => ({
     percent: 0,
   },
   setGainLoss: (newGainLoss) => set({ gainLoss: newGainLoss }),
+
   // Search
   searchInput: "",
   setSearchInput: (newSearchInput) => set({ searchInput: newSearchInput }),
   searchResults: [],
   setSearchResults: (newSearchResults) =>
     set({ searchResults: newSearchResults }),
+
   // Charts
   tickerChartData: [],
   setTickerChartData: (newTickerChartData) =>
@@ -53,4 +55,8 @@ export const useStore = create<State>((set) => ({
   tickerChartTimeRange: "1y",
   setTickerChartTimeRange: (newTickerChartTimeRange) =>
     set({ tickerChartTimeRange: newTickerChartTimeRange }),
+
+  // Watchlist
+  watchlist: [],
+  setWatchlist: (newWatchlist) => set({ watchlist: newWatchlist }),
 }));
