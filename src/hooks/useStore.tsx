@@ -34,6 +34,12 @@ export const useStore = create<State>((set) => ({
     },
   ],
   setTickerInfo: (newTickerInfo) => set({ tickerInfo: newTickerInfo }),
+  gainLoss: {
+    gain: false,
+    diff: 0,
+    percent: 0,
+  },
+  setGainLoss: (newGainLoss) => set({ gainLoss: newGainLoss }),
   // Search
   searchInput: "",
   setSearchInput: (newSearchInput) => set({ searchInput: newSearchInput }),
