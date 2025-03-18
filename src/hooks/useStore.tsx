@@ -57,6 +57,9 @@ export const useStore = create<State>((set) => ({
     set({ tickerChartTimeRange: newTickerChartTimeRange }),
 
   // Watchlist
-  watchlist: [],
+  watchlist: {},
   setWatchlist: (newWatchlist) => set({ watchlist: newWatchlist }),
+  watchlistTickers: [],
+  setWatchlistTickers: (newWatchlistTickers) =>
+    set({ watchlistTickers: newWatchlistTickers }),
 }));
