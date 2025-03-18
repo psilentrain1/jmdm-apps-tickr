@@ -2,7 +2,7 @@ import { app } from "electron";
 import fs from "fs";
 import path from "path";
 import sqlite from "better-sqlite3";
-import { Ticker } from "../types/api.types";
+import { Setting, Ticker } from "../types/api.types";
 import { dbLoc, db } from "../index";
 import { getAPITickerInfo } from "./api.utils";
 import { DateRange } from "../types/component.types";
@@ -153,7 +153,7 @@ export function getWatchlistDB() {
     "SELECT setting_value FROM settings WHERE setting_key = 'watched_tickers';",
   );
 
-  const result = stmt.get();
+  const result = stmt.get() as Setting;
   const list = result.setting_value.split(",");
   return list;
 }
