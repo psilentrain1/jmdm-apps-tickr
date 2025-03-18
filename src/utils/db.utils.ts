@@ -83,8 +83,19 @@ export function getTickerInfo(symbol: string): TickerInfo | null {
     getAPITickerInfo(symbol);
     return null;
   }
+  const a = lastClose[1].close;
+  const b = lastClose[0].close;
+  let gain: boolean;
+  if (a > b) {
+    gain = true;
+  } else {
+    gain = false;
+  }
 
-  return [ticker, lastClose[0], lastClose[1]];
+  const diff = a - b;
+  const percent = (Math.abs(a - b) / ((a + b) / 2)) * 100;
+
+  return [ticker, lastClose[1], gain, diff, percent];
 }
 
 // Add Ticker Info
