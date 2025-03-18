@@ -20,3 +20,7 @@ export interface Prices {
 }
 
 export type TickerInfo = [Ticker, Prices, Prices];
+
+export interface Setting {
+  setting_value: string;
+}
