@@ -14,4 +14,6 @@ export interface State {
   setTickerChartData: (newTickerChartData: Prices[]) => void;
   tickerChartTimeRange: DateRange;
   setTickerChartTimeRange: (newTickerChartTimeRange: DateRange) => void;
+  watchlist: string[];
+  setWatchlist: (newWatchlist: string[]) => void;
 }
