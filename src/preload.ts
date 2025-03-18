@@ -15,6 +15,8 @@ contextBridge.exposeInMainWorld("appInfo", {
 
 contextBridge.exposeInMainWorld("api", {
   search: (searchParam: string) => ipcRenderer.invoke("search", searchParam),
+  getTickerInfo: (ticker: string) =>
+    ipcRenderer.invoke("getTickerInfo", ticker),
   getPrices: (ticker: string, dateRange: DateRange) =>
     ipcRenderer.invoke("getPrices", ticker, dateRange),
 });
