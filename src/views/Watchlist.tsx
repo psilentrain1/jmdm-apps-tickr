@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router";
+import toast from "react-hot-toast";
 import { useStore } from "../hooks/useStore";
 import { MdArrowDropDown, MdArrowDropUp, MdDelete } from "react-icons/md";
 
@@ -59,6 +60,7 @@ export function Watchlist() {
     tickers.splice(index, 1);
     setWatchlistTickers(tickers);
     updateWatchlist();
+    toast.success(`${ticker} removed from watchlist`);
   }
 
   /*   function calcGainLoss(a: number, b: number) {
