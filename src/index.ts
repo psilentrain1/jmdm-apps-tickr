@@ -14,6 +14,8 @@ import {
   searchDB,
   getDBPrices,
   getTickerInfo,
+  getWatchlistDB,
+  setWatchlistDB,
 } from "./utils/db.utils";
 import { loadSampleData } from "./utils/sampleData.utils";
 import { DateRange } from "./types/component.types";
@@ -176,6 +178,31 @@ ipcMain.handle(
   async (event: IpcMainInvokeEvent, ticker: string, dateRange: DateRange) => {
     const results = await getDBPrices(ticker, dateRange);
     return results;
+  },
+);
+
+// Watchlist
+ipcMain.handle("getWatchlist", async () => {
+  return await getWatchlistDB();
+});
+
+ipcMain.handle(
+  "setWatchlist",
+  async (event: IpcMainInvokeEvent, watchlist: string[]) => {
+    return await setWatchlistDB(watchlist);
+  },
+);
+
+ipcMain.handle(
+  "addTicker",
+  async (event: IpcMainInvokeEvent, ticker: string) => {
+    const watchlist = await getWatchlistDB();
+    const tickers = Object.keys(watchlist);
+    if (tickers.includes(ticker)) {
+      return;
+    }
+    tickers.push(ticker);
+    return await setWatchlistDB(tickers);
   },
 );
 

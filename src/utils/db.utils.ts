@@ -2,7 +2,13 @@ import { app } from "electron";
 import fs from "fs";
 import path from "path";
 import sqlite from "better-sqlite3";
-import { Ticker } from "../types/api.types";
+import {
+  Prices,
+  Setting,
+  Ticker,
+  TickerInfo,
+  Watchlist,
+} from "../types/api.types";
 import { dbLoc, db } from "../index";
 import { getAPITickerInfo } from "./api.utils";
 import { DateRange } from "../types/component.types";
@@ -64,21 +70,32 @@ export function createDB() {
 // Maybe check against DB version and check tables
 
 // Get Ticker Info
-export function getTickerInfo(symbol: string) {
+export function getTickerInfo(symbol: string): TickerInfo | null {
   const stmtTicker = db.prepare(`SELECT * FROM ticker WHERE ticker = ?;`);
   const stmtLastClose = db.prepare(
     `SELECT * FROM (SELECT * FROM data_cache WHERE ticker = ? ORDER BY date DESC LIMIT 2) ORDER BY date ASC;`,
   );
-  const ticker = stmtTicker.all(symbol);
-  const lastClose = stmtLastClose.all(symbol);
+  const ticker = stmtTicker.get(symbol) as Ticker | undefined;
+  const lastClose = stmtLastClose.all(symbol) as Prices[];
 
-  if (ticker.length === 0) {
-    // Get the ticker info from the API
+  if (!ticker || lastClose.length < 2) {
+    // If not found, fetch from API or return null
     getAPITickerInfo(symbol);
-  } else {
-    // Return the ticker info from the DB
-    return ticker.concat(lastClose);
+    return null;
   }
+  const a = lastClose[1].close;
+  const b = lastClose[0].close;
+  let gain: boolean;
+  if (a > b) {
+    gain = true;
+  } else {
+    gain = false;
+  }
+
+  const diff = a - b;
+  const percent = (Math.abs(a - b) / ((a + b) / 2)) * 100;
+
+  return [ticker, lastClose[1], gain, diff, percent];
 }
 
 // Add Ticker Info
@@ -100,12 +117,6 @@ export function addTickerInfo(tickerInfo: Ticker) {
 }
 
 export function searchDB(searchParam: string) {
-  /* const stmt = db.prepare(
-    `SELECT * FROM ticker WHERE ticker LIKE @searchParam OR ticker_name LIKE @searchParam OR industry LIKE @searchParam OR sector LIKE @searchParam;`,
-  );
-  const result = stmt.all({
-    searchParam: searchParam,
-  }); */
   const stmt = db.prepare(
     "SELECT * FROM ticker WHERE ticker LIKE ? OR ticker_name LIKE ? OR industry LIKE ? OR sector LIKE ?;",
   );
@@ -150,5 +161,32 @@ export function getDBPrices(ticker: string, dateRange: DateRange) {
   );
 
   const result = stmt.all(ticker, returnLimit);
+  return result;
+}
+
+// Watchlist
+export function getWatchlistDB() {
+  const stmt = db.prepare(
+    "SELECT setting_value FROM settings WHERE setting_key = 'watched_tickers';",
+  );
+
+  const result = stmt.get() as Setting;
+  const list = result.setting_value.split(",");
+  const watchedTickers: Watchlist = {};
+  list.forEach((ticker) => {
+    const tickerInfo: TickerInfo = getTickerInfo(ticker);
+    if (tickerInfo) {
+      watchedTickers[ticker] = tickerInfo;
+    }
+  });
+  return watchedTickers;
+}
+
+export function setWatchlistDB(watchlist: string[]) {
+  const stmt = db.prepare(
+    "UPDATE settings SET setting_value = ? WHERE setting_key = 'watched_tickers';",
+  );
+
+  const result = stmt.run(watchlist.join(","));
   return result;
 }

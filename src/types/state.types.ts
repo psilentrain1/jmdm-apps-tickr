@@ -1,4 +1,4 @@
-import { Ticker, Prices, TickerInfo } from "./api.types";
+import { Ticker, Prices, TickerInfo, Watchlist } from "./api.types";
 import { DateRange, GainLoss } from "./component.types";
 
 export interface State {
@@ -14,4 +14,8 @@ export interface State {
   setTickerChartData: (newTickerChartData: Prices[]) => void;
   tickerChartTimeRange: DateRange;
   setTickerChartTimeRange: (newTickerChartTimeRange: DateRange) => void;
+  watchlist: Watchlist;
+  setWatchlist: (newWatchlist: Watchlist) => void;
+  watchlistTickers: string[];
+  setWatchlistTickers: (newWatchlistTickers: string[]) => void;
 }
