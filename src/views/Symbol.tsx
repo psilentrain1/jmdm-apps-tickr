@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useParams } from "react-router";
+import toast from "react-hot-toast";
 import { TickerChart } from "../components/Charts";
 import { useStore } from "../hooks/useStore";
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
@@ -29,6 +30,11 @@ export function Ticker() {
     setTickerInfo(await window.api?.getTickerInfo(ticker));
   }
 
+  function handleAddToWatchlist() {
+    window.watchlist.addTicker(ticker);
+    toast.success(`${ticker} added to watchlist`);
+  }
+
   useEffect(() => {
     getTickerInfo();
   }, []);
@@ -51,6 +57,14 @@ export function Ticker() {
             {tickerInfo[0].sector}
             {" - "}
             {tickerInfo[0].industry}
+          </div>
+          <div>
+            <span
+              className="cursor-pointer text-sm text-gray-500 underline transition-colors duration-200 hover:text-blue-500 active:text-blue-700"
+              onClick={handleAddToWatchlist}
+            >
+              + Add to Watchlist
+            </span>
           </div>
         </div>
 
