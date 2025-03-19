@@ -26,6 +26,7 @@ contextBridge.exposeInMainWorld("watchlist", {
   getWatchlist: () => ipcRenderer.invoke("getWatchlist"),
   setWatchlist: (watchlist: string[]) =>
     ipcRenderer.invoke("setWatchlist", watchlist),
+  addTicker: (ticker: string) => ipcRenderer.invoke("addTicker", ticker),
 });
 
 contextBridge.exposeInMainWorld("settings", {});

@@ -193,6 +193,19 @@ ipcMain.handle(
   },
 );
 
+ipcMain.handle(
+  "addTicker",
+  async (event: IpcMainInvokeEvent, ticker: string) => {
+    const watchlist = await getWatchlistDB();
+    const tickers = Object.keys(watchlist);
+    if (tickers.includes(ticker)) {
+      return;
+    }
+    tickers.push(ticker);
+    return await setWatchlistDB(tickers);
+  },
+);
+
 // Settings funcs
 
 // This method will be called when Electron has finished
