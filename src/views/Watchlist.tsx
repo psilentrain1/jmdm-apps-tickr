@@ -12,11 +12,48 @@ export function Watchlist() {
   async function getWatchlist() {
     const watchlist = await window.watchlist.getWatchlist();
     setWatchlist(watchlist);
+    setWatchlistTickers(Object.keys(watchlist));
   }
 
-  async function updateWatchlist(watchlist: string[]) {
-    await window.watchlist.setWatchlist(watchlist);
+  async function updateWatchlist() {
+    await window.watchlist.setWatchlist(watchlistTickers);
     getWatchlist();
+  }
+
+  function handleTickerReorder(e, ticker: string) {
+    console.log(e);
+  }
+
+  function handleMoveUp(ticker: string) {
+    const tickers = watchlistTickers;
+    const index = watchlistTickers.indexOf(ticker);
+    if (index == 0) {
+      return;
+    }
+    tickers.splice(index, 1);
+    tickers.splice(index - 1, 0, ticker);
+    setWatchlistTickers(tickers);
+    updateWatchlist();
+  }
+
+  function handleMoveDown(ticker: string) {
+    const tickers = watchlistTickers;
+    const index = watchlistTickers.indexOf(ticker);
+    if (index == watchlistTickers.length - 1) {
+      return;
+    }
+    tickers.splice(index, 1);
+    tickers.splice(index + 1, 0, ticker);
+    setWatchlistTickers(tickers);
+    updateWatchlist();
+  }
+
+  function handleDeleteTicker(ticker: string) {
+    const tickers = watchlistTickers;
+    const index = watchlistTickers.indexOf(ticker);
+    tickers.splice(index, 1);
+    setWatchlistTickers(tickers);
+    updateWatchlist();
   }
 
   /*   function calcGainLoss(a: number, b: number) {
@@ -35,12 +72,12 @@ export function Watchlist() {
 
   useEffect(() => {
     getWatchlist();
-    console.log(watchlist);
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log(watchlist);
-  }, [watchlist]);
+    console.log(watchlistTickers);
+  }, [watchlist]); */
   return (
     <div>
       <h1 className="text-3xl font-bold text-gray-200">Watchlist</h1>
@@ -54,9 +91,10 @@ export function Watchlist() {
               <div>
                 <input
                   type="text"
-                  name={`order-${ticker}`}
-                  id={`order-${ticker}`}
-                  value={1}
+                  name={`${ticker}`}
+                  id={`${ticker}`}
+                  value={watchlistTickers.indexOf(ticker) + 1}
+                  onChange={(e) => handleTickerReorder(e, ticker)}
                   className="w-8 bg-gray-900 text-center focus:ring-0 focus:outline-none"
                 />
               </div>
@@ -85,14 +123,23 @@ export function Watchlist() {
             </div>
             <div className="flex flex-row items-center gap-4">
               <div className="flex flex-col items-center text-2xl">
-                <span className="transition-colors duration-200 hover:text-blue-400 active:text-blue-600">
+                <span
+                  className="transition-colors duration-200 hover:text-blue-400 active:text-blue-600"
+                  onClick={() => handleMoveUp(ticker)}
+                >
                   <MdArrowDropUp />
                 </span>
-                <span className="transition-colors duration-200 hover:text-blue-400 active:text-blue-600">
+                <span
+                  className="transition-colors duration-200 hover:text-blue-400 active:text-blue-600"
+                  onClick={() => handleMoveDown(ticker)}
+                >
                   <MdArrowDropDown />
                 </span>
               </div>
-              <div className="text-2xl transition-colors duration-200 hover:text-red-400 active:text-red-600">
+              <div
+                className="text-2xl transition-colors duration-200 hover:text-red-400 active:text-red-600"
+                onClick={() => handleDeleteTicker(ticker)}
+              >
                 <MdDelete />
               </div>
             </div>
