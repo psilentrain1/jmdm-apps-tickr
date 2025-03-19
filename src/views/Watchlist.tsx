@@ -21,7 +21,12 @@ export function Watchlist() {
   }
 
   function handleTickerReorder(e, ticker: string) {
-    console.log(e);
+    const tickers = watchlistTickers;
+    const index = watchlistTickers.indexOf(ticker);
+    tickers.splice(index, 1);
+    tickers.splice(e.nativeEvent.data - 1, 0, ticker);
+    setWatchlistTickers(tickers);
+    updateWatchlist();
   }
 
   function handleMoveUp(ticker: string) {
