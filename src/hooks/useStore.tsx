@@ -63,4 +63,8 @@ export const useStore = create<State>((set) => ({
   // Dashboard
   topMovers: [],
   setTopMovers: (newTopMovers) => set({ topMovers: newTopMovers }),
+  avgGainLoss: 0,
+  setAvgGainLoss: (newAvgGainLoss) => set({ avgGainLoss: newAvgGainLoss }),
+  avgPercent: 0,
+  setAvgPercent: (newAvgPercent) => set({ avgPercent: newAvgPercent }),
 }));

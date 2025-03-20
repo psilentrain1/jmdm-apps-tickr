@@ -24,4 +24,8 @@ export interface State {
   }) => void;
   topMovers: [string, number][];
   setTopMovers: (newTopMovers: [string, number][]) => void;
+  avgGainLoss: number;
+  setAvgGainLoss: (newAvgGainLoss: number) => void;
+  avgPercent: number;
+  setAvgPercent: (newAvgPercent: number) => void;
 }
