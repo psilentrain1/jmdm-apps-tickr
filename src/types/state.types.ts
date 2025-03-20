@@ -18,4 +18,8 @@ export interface State {
   setWatchlist: (newWatchlist: Watchlist) => void;
   watchlistTickers: string[];
   setWatchlistTickers: (newWatchlistTickers: string[]) => void;
+  watchlistTickerData: { [key: string]: Prices[] };
+  setWatchlistTickerData: (newWatchlistTickerData: {
+    [key: string]: Prices[];
+  }) => void;
 }
