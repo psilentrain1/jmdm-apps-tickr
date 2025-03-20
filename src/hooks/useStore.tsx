@@ -56,4 +56,15 @@ export const useStore = create<State>((set) => ({
   watchlistTickers: [],
   setWatchlistTickers: (newWatchlistTickers) =>
     set({ watchlistTickers: newWatchlistTickers }),
+  watchlistTickerData: {},
+  setWatchlistTickerData: (newWatchlistTickerData) =>
+    set({ watchlistTickerData: newWatchlistTickerData }),
+
+  // Dashboard
+  topMovers: [],
+  setTopMovers: (newTopMovers) => set({ topMovers: newTopMovers }),
+  avgGainLoss: 0,
+  setAvgGainLoss: (newAvgGainLoss) => set({ avgGainLoss: newAvgGainLoss }),
+  avgPercent: 0,
+  setAvgPercent: (newAvgPercent) => set({ avgPercent: newAvgPercent }),
 }));

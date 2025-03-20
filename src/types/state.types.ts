@@ -18,4 +18,14 @@ export interface State {
   setWatchlist: (newWatchlist: Watchlist) => void;
   watchlistTickers: string[];
   setWatchlistTickers: (newWatchlistTickers: string[]) => void;
+  watchlistTickerData: { [key: string]: Prices[] };
+  setWatchlistTickerData: (newWatchlistTickerData: {
+    [key: string]: Prices[];
+  }) => void;
+  topMovers: [string, number][];
+  setTopMovers: (newTopMovers: [string, number][]) => void;
+  avgGainLoss: number;
+  setAvgGainLoss: (newAvgGainLoss: number) => void;
+  avgPercent: number;
+  setAvgPercent: (newAvgPercent: number) => void;
 }
