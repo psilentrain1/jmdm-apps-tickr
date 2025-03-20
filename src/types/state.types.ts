@@ -22,4 +22,6 @@ export interface State {
   setWatchlistTickerData: (newWatchlistTickerData: {
     [key: string]: Prices[];
   }) => void;
+  topMovers: [string, number][];
+  setTopMovers: (newTopMovers: [string, number][]) => void;
 }

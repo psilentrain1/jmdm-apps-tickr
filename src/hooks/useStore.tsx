@@ -59,4 +59,8 @@ export const useStore = create<State>((set) => ({
   watchlistTickerData: {},
   setWatchlistTickerData: (newWatchlistTickerData) =>
     set({ watchlistTickerData: newWatchlistTickerData }),
+
+  // Dashboard
+  topMovers: [],
+  setTopMovers: (newTopMovers) => set({ topMovers: newTopMovers }),
 }));
