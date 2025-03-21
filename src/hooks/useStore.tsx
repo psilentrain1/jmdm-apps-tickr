@@ -67,4 +67,10 @@ export const useStore = create<State>((set) => ({
   setAvgGainLoss: (newAvgGainLoss) => set({ avgGainLoss: newAvgGainLoss }),
   avgPercent: 0,
   setAvgPercent: (newAvgPercent) => set({ avgPercent: newAvgPercent }),
+
+  // Settings
+
+  // UI Mode
+  tickrMode: false,
+  setTickrMode: (newTickrMode) => set({ tickrMode: newTickrMode }),
 }));
