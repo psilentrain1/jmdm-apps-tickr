@@ -1,7 +1,14 @@
-import { MdMenuOpen } from "react-icons/md";
+import { useStore } from "../hooks/useStore";
+import { MdCloseFullscreen, MdMenuOpen } from "react-icons/md";
 import { SearchBar } from "./SearchBar";
 
 export function Header() {
+  // const tickrMode = useStore((state) => state.tickrMode);
+  const setTickrMode = useStore((state) => state.setTickrMode);
+  function handleTickrMode() {
+    setTickrMode(true);
+  }
+
   return (
     <header className="fixed top-0 right-0 left-0 z-10 flex h-11 flex-row bg-gray-900 px-4">
       <div className="flex flex-row">
@@ -15,6 +22,11 @@ export function Header() {
       <div className="flex flex-grow flex-row justify-center">
         <div className="flex flex-row items-center justify-center">
           <SearchBar />
+        </div>
+      </div>
+      <div className="flex flex-row items-center justify-center text-2xl">
+        <div className="cursor-pointer" onClick={() => handleTickrMode()}>
+          <MdCloseFullscreen />
         </div>
       </div>
     </header>
