@@ -7,6 +7,7 @@ declare global {
     api: any;
     watchlist: any;
     settings: any;
+    ui: any;
   }
 }
 
@@ -27,6 +28,12 @@ contextBridge.exposeInMainWorld("watchlist", {
   setWatchlist: (watchlist: string[]) =>
     ipcRenderer.invoke("setWatchlist", watchlist),
   addTicker: (ticker: string) => ipcRenderer.invoke("addTicker", ticker),
+  setTickrMode: () => ipcRenderer.invoke("setTickrMode"),
+});
+
+contextBridge.exposeInMainWorld("ui", {
+  setTickrMode: () => ipcRenderer.invoke("setTickrMode"),
+  exitTickrMode: () => ipcRenderer.invoke("exitTickrMode"),
 });
 
 contextBridge.exposeInMainWorld("settings", {});

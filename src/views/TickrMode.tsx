@@ -3,8 +3,10 @@ import { MdOpenInFull } from "react-icons/md";
 
 export function TickrMode() {
   const setTickrMode = useStore((state) => state.setTickrMode);
-  function handleExitTickrMode() {
+  async function handleExitTickrMode() {
+    const mode = await window.ui.exitTickrMode();
     setTickrMode(false);
+    console.log(mode);
   }
   return (
     <div className="flex h-full flex-row items-center bg-gray-900 px-4 text-gray-100">

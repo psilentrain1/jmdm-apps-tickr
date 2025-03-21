@@ -208,6 +208,22 @@ ipcMain.handle(
 
 // Settings funcs
 
+// UI funcs
+ipcMain.handle("setTickrMode", async () => {
+  /* const mainWindow = BrowserWindow.getFocusedWindow();
+  if (mainWindow) {
+    mainWindow.setFullScreen(true);
+    mainWindow.setMenuBarVisibility(false);
+  } */
+  console.log("Setting Tickr Mode");
+  return "TickrMode Set";
+});
+
+ipcMain.handle("exitTickrMode", async () => {
+  console.log("Exiting Tickr Mode");
+  return "Exiting Tickr Mode";
+});
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.

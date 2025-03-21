@@ -3,10 +3,15 @@ import { MdCloseFullscreen, MdMenuOpen } from "react-icons/md";
 import { SearchBar } from "./SearchBar";
 
 export function Header() {
-  // const tickrMode = useStore((state) => state.tickrMode);
+  const tickrMode = useStore((state) => state.tickrMode);
   const setTickrMode = useStore((state) => state.setTickrMode);
-  function handleTickrMode() {
-    setTickrMode(true);
+
+  async function handleTickrMode() {
+    if (!tickrMode) {
+      const mode = await window.ui.setTickrMode();
+      setTickrMode(true);
+      console.log(mode);
+    }
   }
 
   return (
