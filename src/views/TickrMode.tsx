@@ -1,9 +1,10 @@
+import { useEffect } from "react";
 import { useStore } from "../hooks/useStore";
 import { MdArrowDropDown, MdArrowDropUp, MdOpenInFull } from "react-icons/md";
 
 export function TickrMode() {
   const watchlist = useStore((state) => state.watchlist);
-  const setWatchlist = useStore((state) => state.setWatchlist);
+  // const setWatchlist = useStore((state) => state.setWatchlist);
   const setTickrMode = useStore((state) => state.setTickrMode);
 
   async function handleExitTickrMode() {
@@ -12,11 +13,25 @@ export function TickrMode() {
     console.log(mode);
   }
 
-  async function getWatchlist() {
+  function addAnimation() {
+    const ticker = document.getElementById("ticker");
+
+    const tickerContent = Array.from(ticker.children);
+    tickerContent.forEach((item) => {
+      const duplicatedItem = item.cloneNode(true) as HTMLElement;
+      duplicatedItem.setAttribute("aria-hidden", "true");
+      ticker.appendChild(duplicatedItem);
+    });
+  }
+  useEffect(() => {
+    addAnimation();
+  }, []);
+
+  /*   async function getWatchlist() {
     const watchlist = await window.watchlist.getWatchlist();
     setWatchlist(watchlist);
     // setWatchlistTickers(Object.keys(watchlist));
-  }
+  } */
   return (
     <div className="flex h-full flex-row items-center bg-gray-900 px-4 text-gray-100">
       <div>
@@ -24,9 +39,15 @@ export function TickrMode() {
           Tickr
         </div>
       </div>
-      <div className="inline-flex flex-grow flex-nowrap overflow-hidden">
+      <div
+        id="tickerContainer"
+        className="inline-flex flex-grow flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_20px,_black_calc(100%-20px),transparent_100%)]"
+      >
         {/* Scrolling ticker here */}
-        <ul className="flex items-center justify-center md:justify-start [&_li]:mx-6">
+        <ul
+          id="ticker"
+          className="tickr flex items-center justify-center md:justify-start [&_li]:mx-6"
+        >
           {Object.keys(watchlist).map((ticker) => (
             <li
               key={ticker}
