@@ -36,4 +36,9 @@ contextBridge.exposeInMainWorld("ui", {
   exitTickrMode: () => ipcRenderer.invoke("exitTickrMode"),
 });
 
-contextBridge.exposeInMainWorld("settings", {});
+contextBridge.exposeInMainWorld("settings", {
+  getSetting: (settingName: string) =>
+    ipcRenderer.invoke("getSetting", settingName),
+  setSetting: (settingName: string, settingValue: string) =>
+    ipcRenderer.invoke("setSetting", settingName, settingValue),
+});

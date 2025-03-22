@@ -55,7 +55,7 @@ export function createDB() {
     setting_value TEXT
     );`;
 
-  const query6 = `INSERT INTO settings (setting_key, setting_value) VALUES ('watched_symbols', '[]');`;
+  const query6 = `INSERT INTO settings (setting_key, setting_value) VALUES ('watched_symbols', '[]'), ('default_date_range', '3m');`;
 
   db.prepare(query1).run();
   db.prepare(query2).run();
@@ -188,5 +188,24 @@ export function setWatchlistDB(watchlist: string[]) {
   );
 
   const result = stmt.run(watchlist.join(","));
+  return result;
+}
+
+// Settings
+export function getSettingDB(settingName: string) {
+  const stmt = db.prepare(
+    "SELECT setting_value FROM settings WHERE setting_key = ?;",
+  );
+
+  const result = stmt.get(settingName);
+  return result;
+}
+
+export function setSettingDB(settingName: string, settingValue: string) {
+  const stmt = db.prepare(
+    "UPDATE settings SET setting_value = ? WHERE setting_key = ?;",
+  );
+
+  const result = stmt.run(settingValue, settingName);
   return result;
 }

@@ -16,6 +16,8 @@ import {
   getTickerInfo,
   getWatchlistDB,
   setWatchlistDB,
+  getSettingDB,
+  setSettingDB,
 } from "./utils/db.utils";
 import { loadSampleData } from "./utils/sampleData.utils";
 import { DateRange } from "./types/component.types";
@@ -209,6 +211,23 @@ ipcMain.handle(
 );
 
 // Settings funcs
+ipcMain.handle(
+  "getSetting",
+  async (event: IpcMainInvokeEvent, settingName: string) => {
+    return await getSettingDB(settingName);
+  },
+);
+
+ipcMain.handle(
+  "setSetting",
+  async (
+    event: IpcMainInvokeEvent,
+    settingName: string,
+    settingValue: string,
+  ) => {
+    return await setSettingDB(settingName, settingValue);
+  },
+);
 
 // UI funcs
 ipcMain.handle("setTickrMode", async () => {
