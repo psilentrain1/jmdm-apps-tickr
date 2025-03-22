@@ -131,12 +131,14 @@ const template = [
 const menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
 
+let mainWindow: BrowserWindow;
+
 const createWindow = (): void => {
   // Run startup tasks
   startUpTasks();
 
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     height: 1000,
     width: 1600,
     webPreferences: {
@@ -210,16 +212,18 @@ ipcMain.handle(
 
 // UI funcs
 ipcMain.handle("setTickrMode", async () => {
-  /* const mainWindow = BrowserWindow.getFocusedWindow();
+  /* const mainWindow = BrowserWindow.getFocusedWindow();*/
   if (mainWindow) {
-    mainWindow.setFullScreen(true);
     mainWindow.setMenuBarVisibility(false);
-  } */
+    mainWindow.setSize(600, 64);
+  }
   console.log("Setting Tickr Mode");
   return "TickrMode Set";
 });
 
 ipcMain.handle("exitTickrMode", async () => {
+  mainWindow.setMenuBarVisibility(true);
+  mainWindow.maximize();
   console.log("Exiting Tickr Mode");
   return "Exiting Tickr Mode";
 });
