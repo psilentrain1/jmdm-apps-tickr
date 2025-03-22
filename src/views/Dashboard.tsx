@@ -6,6 +6,9 @@ import { Watched } from "../components/Watched.Dashboard";
 
 export function Dashboard() {
   const setWatchlist = useStore((state) => state.setWatchlist);
+  const setTickerChartTimeRange = useStore(
+    (state) => state.setTickerChartTimeRange,
+  );
 
   async function getWatchlist() {
     const watchlist = await window.watchlist.getWatchlist();
@@ -14,8 +17,19 @@ export function Dashboard() {
     console.log("getWatchlist");
   }
 
-  useEffect(() => {
+  async function setSettings() {
+    const defaultDateRange =
+      await window.settings.getSetting("default_date_range");
+    setTickerChartTimeRange(defaultDateRange.setting_value);
+  }
+
+  async function startup() {
     getWatchlist();
+    setSettings();
+  }
+
+  useEffect(() => {
+    startup();
   }, []);
   return (
     <div>
