@@ -28,4 +28,6 @@ export interface State {
   setAvgGainLoss: (newAvgGainLoss: number) => void;
   avgPercent: number;
   setAvgPercent: (newAvgPercent: number) => void;
+  tickrMode: boolean;
+  setTickrMode: (newTickrMode: boolean) => void;
 }
