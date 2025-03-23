@@ -5,6 +5,20 @@ import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 
 export function AAG() {
   const watchlist = useStore((state) => state.watchlist);
+  return (
+    <section>
+      <h2 className="text-2xl font-bold">At-A-Glance</h2>
+      {Object.keys(watchlist).length > 0 ? (
+        <AAGData />
+      ) : (
+        <p>No tickers in your watchlist.</p>
+      )}
+    </section>
+  );
+}
+
+export function AAGData() {
+  const watchlist = useStore((state) => state.watchlist);
   const topMovers = useStore((state) => state.topMovers);
   const setTopMovers = useStore((state) => state.setTopMovers);
   const avgGainLoss = useStore((state) => state.avgGainLoss);
@@ -44,52 +58,49 @@ export function AAG() {
   }, [watchlist]);
 
   return (
-    <section>
-      <h2 className="text-2xl font-bold">At-A-Glance</h2>
-      <div className="flex flex-row gap-2">
-        <div className="p-2">
-          <h3 className="font-bold">Biggest Movers:</h3>
-          <ol className="p-2">
-            {topMovers.map((ticker) => (
-              <li key={ticker[0]} className="flex flex-row items-center gap-2">
-                <Link
-                  className="underline transition-colors duration-200 hover:text-blue-500 active:text-blue-700"
-                  to={`/ticker/${ticker[0]}`}
-                >
-                  {ticker[0]}
-                </Link>
-                {watchlist[`${ticker[0]}`][2] ? (
-                  <span className="text-2xl text-green-500">
-                    <MdArrowDropUp />
-                  </span>
-                ) : (
-                  <span className="text-2xl text-red-500">
-                    <MdArrowDropDown />
-                  </span>
-                )}
-                <span>${watchlist[`${ticker[0]}`][1].close.toFixed(2)}</span>
-                <span>
-                  {watchlist[`${ticker[0]}`][2]
-                    ? watchlist[`${ticker[0]}`][4].toFixed(2)
-                    : -watchlist[`${ticker[0]}`][4].toFixed(2)}
-                  %
+    <div className="flex flex-row gap-2">
+      <div className="p-2">
+        <h3 className="font-bold">Biggest Movers:</h3>
+        <ol className="p-2">
+          {topMovers.map((ticker) => (
+            <li key={ticker[0]} className="flex flex-row items-center gap-2">
+              <Link
+                className="underline transition-colors duration-200 hover:text-blue-500 active:text-blue-700"
+                to={`/ticker/${ticker[0]}`}
+              >
+                {ticker[0]}
+              </Link>
+              {watchlist[`${ticker[0]}`][2] ? (
+                <span className="text-2xl text-green-500">
+                  <MdArrowDropUp />
                 </span>
-              </li>
-            ))}
-          </ol>
-        </div>
-        <div className="p-2">
-          <h3 className="font-bold">Watchlist Average Change:</h3>
-          <div className="p-2 text-2xl">
-            <p>
-              <span>${avgGainLoss.toFixed(2)}</span>
-            </p>
-            <p>
-              <span>{avgPercent.toFixed(1)}%</span>
-            </p>
-          </div>
+              ) : (
+                <span className="text-2xl text-red-500">
+                  <MdArrowDropDown />
+                </span>
+              )}
+              <span>${watchlist[`${ticker[0]}`][1].close.toFixed(2)}</span>
+              <span>
+                {watchlist[`${ticker[0]}`][2]
+                  ? watchlist[`${ticker[0]}`][4].toFixed(2)
+                  : -watchlist[`${ticker[0]}`][4].toFixed(2)}
+                %
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div className="p-2">
+        <h3 className="font-bold">Watchlist Average Change:</h3>
+        <div className="p-2 text-2xl">
+          <p>
+            <span>${avgGainLoss.toFixed(2)}</span>
+          </p>
+          <p>
+            <span>{avgPercent.toFixed(1)}%</span>
+          </p>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
