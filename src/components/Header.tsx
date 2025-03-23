@@ -1,8 +1,10 @@
 import { useStore } from "../hooks/useStore";
-import { MdCloseFullscreen, MdMenuOpen } from "react-icons/md";
+import { MdCloseFullscreen, MdMenuOpen, MdMenu } from "react-icons/md";
 import { SearchBar } from "./SearchBar";
 
 export function Header() {
+  const sidebarOpen = useStore((state) => state.sidebarOpen);
+  const setSidebarOpen = useStore((state) => state.setSidebarOpen);
   const tickrMode = useStore((state) => state.tickrMode);
   const setTickrMode = useStore((state) => state.setTickrMode);
 
@@ -17,8 +19,11 @@ export function Header() {
   return (
     <header className="fixed top-0 right-0 left-0 z-10 flex h-11 flex-row bg-gray-900 px-4">
       <div className="flex flex-row">
-        <div className="flex flex-row items-center justify-center text-3xl">
-          <MdMenuOpen />
+        <div
+          className="flex cursor-pointer flex-row items-center justify-center text-3xl"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        >
+          {sidebarOpen ? <MdMenuOpen /> : <MdMenu />}
         </div>
         <div className="flex flex-row items-center justify-center px-4 text-3xl font-bold">
           Tickr
