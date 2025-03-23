@@ -35,7 +35,7 @@ export function TickrMode() {
   return (
     <div className="flex h-full flex-row items-center bg-gray-900 px-4 text-gray-100">
       <div>
-        <div className="flex flex-row items-center justify-center px-4 text-3xl font-bold">
+        <div className="flex cursor-default flex-row items-center justify-center px-4 text-3xl font-bold">
           Tickr
         </div>
       </div>
@@ -43,7 +43,6 @@ export function TickrMode() {
         id="tickerContainer"
         className="inline-flex flex-grow flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_20px,_black_calc(100%-20px),transparent_100%)]"
       >
-        {/* Scrolling ticker here */}
         <ul
           id="ticker"
           className="tickr flex items-center justify-center md:justify-start [&_li]:mx-6"
@@ -53,7 +52,7 @@ export function TickrMode() {
               key={ticker}
               className="flex flex-row items-center gap-1 text-sm"
             >
-              <span className="font-bold">{ticker}</span>
+              <span className="cursor-default font-bold">{ticker}</span>
               {watchlist[ticker][2] ? (
                 <span className="text-2xl text-green-600">
                   <MdArrowDropUp />
@@ -63,7 +62,7 @@ export function TickrMode() {
                   <MdArrowDropDown />
                 </span>
               )}
-              <span>
+              <span className="cursor-default">
                 {"$"}
                 {watchlist[ticker][1].close.toFixed(2)}
               </span>
