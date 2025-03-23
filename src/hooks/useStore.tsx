@@ -75,4 +75,6 @@ export const useStore = create<State>((set) => ({
   setSidebarOpen: (newSidebarOpen) => set({ sidebarOpen: newSidebarOpen }),
   tickrMode: false,
   setTickrMode: (newTickrMode) => set({ tickrMode: newTickrMode }),
+  isLoading: false,
+  setIsLoading: (newIsLoading) => set({ isLoading: newIsLoading }),
 }));

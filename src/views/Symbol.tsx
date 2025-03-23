@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useParams } from "react-router";
 import toast from "react-hot-toast";
 import { TickerChart } from "../components/Charts";
+import { Loading } from "../components/Loading";
 import { useStore } from "../hooks/useStore";
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 
@@ -9,6 +10,8 @@ export function Ticker() {
   const { ticker } = useParams();
   const tickerInfo = useStore((state) => state.tickerInfo);
   const setTickerInfo = useStore((state) => state.setTickerInfo);
+  const isLoading = useStore((state) => state.isLoading);
+  const setIsLoading = useStore((state) => state.setIsLoading);
   // const gainLoss = useStore((state) => state.gainLoss);
   // const setGainLoss = useStore((state) => state.setGainLoss);
 
@@ -27,7 +30,9 @@ export function Ticker() {
   } */
 
   async function getTickerInfo() {
+    setIsLoading(true);
     setTickerInfo(await window.api?.getTickerInfo(ticker));
+    setIsLoading(false);
   }
 
   function handleAddToWatchlist() {
@@ -43,7 +48,9 @@ export function Ticker() {
     setGainLoss(calcGainLoss(tickerInfo[2].close, tickerInfo[1].close));
   }, [tickerInfo]); */
 
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : (
     <>
       <div className="flex flex-row justify-between pb-2">
         <div>
