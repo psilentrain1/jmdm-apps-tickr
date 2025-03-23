@@ -3,6 +3,8 @@ import { MdCloseFullscreen, MdMenuOpen } from "react-icons/md";
 import { SearchBar } from "./SearchBar";
 
 export function Header() {
+  const sidebarOpen = useStore((state) => state.sidebarOpen);
+  const setSidebarOpen = useStore((state) => state.setSidebarOpen);
   const tickrMode = useStore((state) => state.tickrMode);
   const setTickrMode = useStore((state) => state.setTickrMode);
 

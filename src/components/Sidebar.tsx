@@ -1,7 +1,11 @@
+import { useStore } from "../hooks/useStore";
 import { MdDashboard, MdListAlt, MdSettings } from "react-icons/md";
 import { NavLink } from "react-router";
 
 export function Sidebar() {
+  const sidebarOpen = useStore((state) => state.sidebarOpen);
+  const setSidebarOpen = useStore((state) => state.setSidebarOpen);
+
   return (
     <div className="fixed h-full w-48 bg-gray-900 pt-11 pb-9">
       <Navigation />

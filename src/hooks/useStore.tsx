@@ -70,7 +70,9 @@ export const useStore = create<State>((set) => ({
 
   // Settings
 
-  // UI Mode
+  // UI
+  sidebarOpen: true,
+  setSidebarOpen: (newSidebarOpen) => set({ sidebarOpen: newSidebarOpen }),
   tickrMode: false,
   setTickrMode: (newTickrMode) => set({ tickrMode: newTickrMode }),
 }));
