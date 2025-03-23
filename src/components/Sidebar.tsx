@@ -7,9 +7,9 @@ export function Sidebar() {
   const sidebarOpen = useStore((state) => state.sidebarOpen);
 
   const openClass =
-    "fixed h-full w-48 bg-gray-900 pt-11 pb-9 transition-all duration-300 ease-in-out";
+    "fixed h-full w-48 bg-gray-900 pt-11 pb-4 transition-all duration-300 ease-in-out";
   const closedClass =
-    "fixed h-full w-16 bg-gray-900 pt-11 pb-9 transition-all duration-300 ease-in-out";
+    "fixed h-full w-16 bg-gray-900 pt-11 pb-4 transition-all duration-300 ease-in-out";
 
   return (
     <div className={sidebarOpen ? openClass : closedClass}>

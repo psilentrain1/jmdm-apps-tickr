@@ -4,6 +4,7 @@ import {
   ipcMain,
   Menu,
   IpcMainInvokeEvent,
+  shell,
 } from "electron";
 import packageInfo from "../package.json";
 import path from "path";
@@ -119,6 +120,22 @@ const template = [
   {
     role: "Help",
     submenu: [
+      {
+        label: "Documentation",
+        click: () => {
+          shell.openExternal(
+            "https://github.com/psilentrain1/jmdm-apps-tickr/blob/main/README.md",
+          );
+        },
+      },
+      {
+        label: "Report Issues",
+        click: () => {
+          shell.openExternal(
+            "https://github.com/psilentrain1/jmdm-apps-tickr/issues/new",
+          );
+        },
+      },
       {
         label: "Load Demo Data",
         click: () => {
@@ -245,6 +262,16 @@ ipcMain.handle("exitTickrMode", async () => {
   mainWindow.maximize();
   console.log("Exiting Tickr Mode");
   return "Exiting Tickr Mode";
+});
+
+// About page info
+app.setAboutPanelOptions({
+  applicationName: "Tickr",
+  applicationVersion: packageInfo.version,
+  version: packageInfo.version,
+  credits: "Created with Love by James Drake",
+  copyright: "Copyright © 2025 James Drake Tech",
+  // website: "https://jamesdraketech.com",
 });
 
 // This method will be called when Electron has finished

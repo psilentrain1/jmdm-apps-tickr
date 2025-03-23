@@ -10,7 +10,7 @@ export default function App() {
       <Header />
       <div className="flex flex-grow flex-row">
         <Sidebar />
-        <main className="mt-11 mb-9 ml-48 flex-grow overflow-auto overscroll-contain bg-gray-800 p-4">
+        <main className="mt-11 ml-48 flex-grow overflow-auto overscroll-contain bg-gray-800 p-4 pb-4">
           <Outlet />
           <Toaster
             position="bottom-right"
@@ -23,7 +23,7 @@ export default function App() {
           />
         </main>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
