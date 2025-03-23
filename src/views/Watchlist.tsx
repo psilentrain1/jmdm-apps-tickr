@@ -35,11 +35,15 @@ export function WatchlistList() {
     getWatchlist();
   }
 
-  function handleTickerReorder(e, ticker: string) {
+  function handleTickerReorder(
+    e: React.ChangeEvent<HTMLInputElement>,
+    ticker: string,
+  ) {
     const tickers = watchlistTickers;
     const index = watchlistTickers.indexOf(ticker);
     tickers.splice(index, 1);
-    tickers.splice(e.nativeEvent.data - 1, 0, ticker);
+    const newIndex = parseInt(e.target.value, 10) - 1;
+    tickers.splice(newIndex, 0, ticker);
     setWatchlistTickers(tickers);
     updateWatchlist();
   }
