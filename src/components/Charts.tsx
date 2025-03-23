@@ -98,7 +98,7 @@ Volume: ${tickerChartData[context[0].dataIndex].volume}`;
         data: tickerChartData.map((item) => item.close),
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
-        pointStyle: false,
+        pointRadius: 0,
       },
     ],
   };
@@ -185,7 +185,7 @@ export function Top5Chart() {
         fill: false,
         label: ticker,
         data: watchlistTickerData[`${ticker}`].map((item) => item.close),
-        pointStyle: false,
+        pointRadius: 0,
       };
     }),
   };
