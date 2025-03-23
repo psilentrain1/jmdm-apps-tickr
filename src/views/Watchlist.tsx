@@ -6,6 +6,20 @@ import { MdArrowDropDown, MdArrowDropUp, MdDelete } from "react-icons/md";
 
 export function Watchlist() {
   const watchlist = useStore((state) => state.watchlist);
+  return (
+    <div>
+      <h1 className="text-3xl font-bold text-gray-200">Watchlist</h1>
+      {Object.keys(watchlist).length > 0 ? (
+        <WatchlistList />
+      ) : (
+        <p>No tickers in your watchlist.</p>
+      )}
+    </div>
+  );
+}
+
+export function WatchlistList() {
+  const watchlist = useStore((state) => state.watchlist);
   const setWatchlist = useStore((state) => state.setWatchlist);
   const watchlistTickers = useStore((state) => state.watchlistTickers);
   const setWatchlistTickers = useStore((state) => state.setWatchlistTickers);
@@ -86,73 +100,70 @@ export function Watchlist() {
     console.log(watchlistTickers);
   }, [watchlist]); */
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-gray-200">Watchlist</h1>
-      <div id="watchlist">
-        {Object.keys(watchlist).map((ticker) => (
-          <div
-            key={ticker}
-            className="flex flex-row items-center justify-between border-b-2 border-gray-100 px-4 py-2 text-gray-200"
-          >
-            <div className="flex flex-row items-center gap-4">
-              <div>
-                <input
-                  type="text"
-                  name={`${ticker}`}
-                  id={`${ticker}`}
-                  value={watchlistTickers.indexOf(ticker) + 1}
-                  onChange={(e) => handleTickerReorder(e, ticker)}
-                  className="w-8 bg-gray-900 text-center focus:ring-0 focus:outline-none"
-                />
-              </div>
-              <div className="flex flex-row items-end gap-2">
-                <Link
-                  to={`/ticker/${ticker}`}
-                  className="text-2xl font-bold underline transition-colors duration-200 hover:text-blue-400 active:text-blue-600"
-                >
-                  {watchlist[ticker][0].ticker_name}
-                </Link>
-                <span className="text-gray-400">{ticker}</span>
-                <div className="flex flex-row items-center">
-                  {watchlist[ticker][2] ? (
-                    <span className="text-2xl text-green-600">
-                      <MdArrowDropUp />
-                    </span>
-                  ) : (
-                    <span className="text-2xl text-red-600">
-                      <MdArrowDropDown />
-                    </span>
-                  )}
-                  {"$"}
-                  {watchlist[ticker][1].close.toFixed(2)}
-                </div>
-              </div>
+    <div id="watchlist">
+      {Object.keys(watchlist).map((ticker) => (
+        <div
+          key={ticker}
+          className="flex flex-row items-center justify-between border-b-2 border-gray-100 px-4 py-2 text-gray-200"
+        >
+          <div className="flex flex-row items-center gap-4">
+            <div>
+              <input
+                type="text"
+                name={`${ticker}`}
+                id={`${ticker}`}
+                value={watchlistTickers.indexOf(ticker) + 1}
+                onChange={(e) => handleTickerReorder(e, ticker)}
+                className="w-8 bg-gray-900 text-center focus:ring-0 focus:outline-none"
+              />
             </div>
-            <div className="flex flex-row items-center gap-4">
-              <div className="flex flex-col items-center text-2xl">
-                <span
-                  className="transition-colors duration-200 hover:text-blue-400 active:text-blue-600"
-                  onClick={() => handleMoveUp(ticker)}
-                >
-                  <MdArrowDropUp />
-                </span>
-                <span
-                  className="transition-colors duration-200 hover:text-blue-400 active:text-blue-600"
-                  onClick={() => handleMoveDown(ticker)}
-                >
-                  <MdArrowDropDown />
-                </span>
-              </div>
-              <div
-                className="text-2xl transition-colors duration-200 hover:text-red-400 active:text-red-600"
-                onClick={() => handleDeleteTicker(ticker)}
+            <div className="flex flex-row items-end gap-2">
+              <Link
+                to={`/ticker/${ticker}`}
+                className="text-2xl font-bold underline transition-colors duration-200 hover:text-blue-400 active:text-blue-600"
               >
-                <MdDelete />
+                {watchlist[ticker][0].ticker_name}
+              </Link>
+              <span className="text-gray-400">{ticker}</span>
+              <div className="flex flex-row items-center">
+                {watchlist[ticker][2] ? (
+                  <span className="text-2xl text-green-600">
+                    <MdArrowDropUp />
+                  </span>
+                ) : (
+                  <span className="text-2xl text-red-600">
+                    <MdArrowDropDown />
+                  </span>
+                )}
+                {"$"}
+                {watchlist[ticker][1].close.toFixed(2)}
               </div>
             </div>
           </div>
-        ))}
-      </div>
+          <div className="flex flex-row items-center gap-4">
+            <div className="flex flex-col items-center text-2xl">
+              <span
+                className="transition-colors duration-200 hover:text-blue-400 active:text-blue-600"
+                onClick={() => handleMoveUp(ticker)}
+              >
+                <MdArrowDropUp />
+              </span>
+              <span
+                className="transition-colors duration-200 hover:text-blue-400 active:text-blue-600"
+                onClick={() => handleMoveDown(ticker)}
+              >
+                <MdArrowDropDown />
+              </span>
+            </div>
+            <div
+              className="text-2xl transition-colors duration-200 hover:text-red-400 active:text-red-600"
+              onClick={() => handleDeleteTicker(ticker)}
+            >
+              <MdDelete />
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
