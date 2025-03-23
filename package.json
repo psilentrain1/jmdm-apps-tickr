@@ -1,6 +1,6 @@
 {
   "name": "jmdm-apps-tickr",
-  "productName": "jmdm-apps-tickr",
+  "productName": "Tickr",
   "version": "0.0.0",
   "description": "My Electron application description",
   "main": ".webpack/main",
