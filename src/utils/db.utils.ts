@@ -10,7 +10,7 @@ import {
   Watchlist,
 } from "../types/api.types";
 import { dbLoc, db } from "../index";
-import { getAPITickerInfo } from "./api.utils";
+// import { getAPITickerInfo } from "./api.utils";
 import { DateRange } from "../types/component.types";
 
 export function createDB() {
@@ -78,11 +78,11 @@ export function getTickerInfo(symbol: string): TickerInfo | null {
   const ticker = stmtTicker.get(symbol) as Ticker | undefined;
   const lastClose = stmtLastClose.all(symbol) as Prices[];
 
-  if (!ticker || lastClose.length < 2) {
+  /*  if (!ticker || lastClose.length < 2) {
     // If not found, fetch from API or return null
     getAPITickerInfo(symbol);
     return null;
-  }
+  } */
   const a = lastClose[1].close;
   const b = lastClose[0].close;
   let gain: boolean;
