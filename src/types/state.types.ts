@@ -32,4 +32,6 @@ export interface State {
   setSidebarOpen: (newSidebarOpen: boolean) => void;
   tickrMode: boolean;
   setTickrMode: (newTickrMode: boolean) => void;
+  isLoading: boolean;
+  setIsLoading: (newIsLoading: boolean) => void;
 }
