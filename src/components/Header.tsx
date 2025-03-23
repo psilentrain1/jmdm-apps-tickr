@@ -25,7 +25,7 @@ export function Header() {
         >
           {sidebarOpen ? <MdMenuOpen /> : <MdMenu />}
         </div>
-        <div className="flex flex-row items-center justify-center px-4 text-3xl font-bold">
+        <div className="flex cursor-default flex-row items-center justify-center px-4 text-3xl font-bold">
           Tickr
         </div>
       </div>
