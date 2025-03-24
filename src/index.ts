@@ -39,7 +39,7 @@ export const dbLoc = path.join(
   "store",
   "tickr.db",
 );
-console.log("Database location: ", dbLoc);
+
 // Create the database connection
 export const db = new sqlite(dbLoc);
 
@@ -154,7 +154,6 @@ const template: MenuItemConstructorOptions[] = [
       {
         label: "Load Demo Data",
         click: () => {
-          console.log("Click Load Sample Data");
           loadSampleData();
         },
       },
@@ -168,6 +167,8 @@ Menu.setApplicationMenu(menu);
 let mainWindow: BrowserWindow;
 
 const createWindow = (): void => {
+  log.verbose("Creating main window");
+
   // Run startup tasks
   startUpTasks();
 
@@ -189,6 +190,7 @@ const createWindow = (): void => {
 
 // appInfo funcs
 ipcMain.handle("getAppVersion", () => {
+  log.verbose("Getting app version");
   return packageInfo.version;
 });
 
@@ -196,6 +198,7 @@ ipcMain.handle("getAppVersion", () => {
 ipcMain.handle(
   "search",
   async (event: IpcMainInvokeEvent, searchParam: string) => {
+    log.verbose("Searching for: ", searchParam);
     const results = await searchDB(searchParam);
     return results;
   },
@@ -204,6 +207,7 @@ ipcMain.handle(
 ipcMain.handle(
   "getTickerInfo",
   async (event: IpcMainInvokeEvent, ticker: string) => {
+    log.verbose("Getting ticker info for: ", ticker);
     const results = await getTickerInfo(ticker);
     return results;
   },
@@ -212,6 +216,12 @@ ipcMain.handle(
 ipcMain.handle(
   "getPrices",
   async (event: IpcMainInvokeEvent, ticker: string, dateRange: DateRange) => {
+    log.verbose(
+      "Getting prices for: ",
+      ticker,
+      " with date range: ",
+      dateRange,
+    );
     const results = await getDBPrices(ticker, dateRange);
     return results;
   },
@@ -219,12 +229,14 @@ ipcMain.handle(
 
 // Watchlist
 ipcMain.handle("getWatchlist", async () => {
+  log.verbose("Getting watchlist");
   return await getWatchlistDB();
 });
 
 ipcMain.handle(
   "setWatchlist",
   async (event: IpcMainInvokeEvent, watchlist: string[]) => {
+    log.info("Setting watchlist to: ", watchlist);
     return await setWatchlistDB(watchlist);
   },
 );
@@ -232,6 +244,7 @@ ipcMain.handle(
 ipcMain.handle(
   "addTicker",
   async (event: IpcMainInvokeEvent, ticker: string) => {
+    log.info("Adding ticker to watchlist: ", ticker);
     const watchlist = await getWatchlistDB();
     const tickers = Object.keys(watchlist);
     if (tickers.includes(ticker)) {
@@ -246,6 +259,7 @@ ipcMain.handle(
 ipcMain.handle(
   "getSetting",
   async (event: IpcMainInvokeEvent, settingName: string) => {
+    log.verbose("Getting setting for: ", settingName);
     return await getSettingDB(settingName);
   },
 );
@@ -257,25 +271,25 @@ ipcMain.handle(
     settingName: string,
     settingValue: string,
   ) => {
+    log.verbose("Setting ", settingName, " to: ", settingValue);
     return await setSettingDB(settingName, settingValue);
   },
 );
 
 // UI funcs
 ipcMain.handle("setTickrMode", async () => {
-  /* const mainWindow = BrowserWindow.getFocusedWindow();*/
+  log.verbose("Entering Tickr Mode");
   if (mainWindow) {
     mainWindow.setMenuBarVisibility(false);
     mainWindow.setSize(600, 64);
   }
-  console.log("Setting Tickr Mode");
   return "TickrMode Set";
 });
 
 ipcMain.handle("exitTickrMode", async () => {
+  log.verbose("Exiting Tickr Mode");
   mainWindow.setMenuBarVisibility(true);
   mainWindow.maximize();
-  console.log("Exiting Tickr Mode");
   return "Exiting Tickr Mode";
 });
 
@@ -300,12 +314,14 @@ app.disableHardwareAcceleration();
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on("window-all-closed", () => {
+  log.verbose("All windows closed");
   if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
 app.on("activate", () => {
+  log.verbose("App activated");
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
@@ -313,12 +329,9 @@ app.on("activate", () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
-
 // Start up tasks
 function startUpTasks() {
-  console.log("Start up tasks running");
+  log.verbose("Start up tasks running");
   const file = fs.readFileSync(dbLoc);
   if (file) {
     if (file.length === 0) {
@@ -326,5 +339,5 @@ function startUpTasks() {
     }
   }
 
-  console.log("Start up tasks complete");
+  log.info("Start up tasks complete");
 }
