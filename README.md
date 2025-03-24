@@ -35,6 +35,7 @@ To add a ticker to your watchlist, search for a ticker, then click `+ Add to Wat
 ### Tickr Mode
 
 _Tickr Mode_ provides a small scrolling ticker of the stocks on your watchlist. To enter _Tickr Mode_, click the arrows in the upper right of the screen. To exit _Tickr Mode_, click the same area to the right of the ticker.
+![TickrMode](.github/docs/tickrmode.png)
 
 ## Building from Source
 
