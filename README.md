@@ -4,7 +4,7 @@
 
 _Tickr_ is a simple, lightweight app to track the performance of stocks.
 
-_Note:_ This app was created as a personal project and does not _yet_ provide real-time data
+_Note:_ This app was created as a personal project and does not _yet_ provide real-time data.
 
 ## Getting Started
 
@@ -36,6 +36,16 @@ To add a ticker to your watchlist, search for a ticker, then click `+ Add to Wat
 
 _Tickr Mode_ provides a small scrolling ticker of the stocks on your watchlist. To enter _Tickr Mode_, click the arrows in the upper right of the screen. To exit _Tickr Mode_, click the same area to the right of the ticker.
 ![TickrMode](.github/docs/tickrmode.png)
+
+## Future Plans
+
+### API Connection
+
+I plan to add the ability to pull updated and near-live data from an API through a _bring your own API_ function. You will be able to select your data source and add your own API key to pull data.
+
+### Crypto
+
+I plan to add support for tracking crypto and other types of investments.
 
 ## Building from Source
 
@@ -70,8 +80,25 @@ pnpm install
 
 ### Changing the Database Location
 
-By default, the database will be initialized in `database location`.
+By default, the database will be initialized in one of the following directories:
 
-To change the location of the database,
+```shell
+# Windows
+%APPDATA%/Tickr/tickr.db
+
+# Linux
+$XDG_CONFIG_HOME/Tickr/tickr.db
+<or>
+~/.config/Tickr/tickr.db
+
+# macOS
+~/Library/Application Support/Tickr/tickr.db
+```
+
+To change the location of the database, create a `.env` file in the root of the project and add the following line:
+
+```
+DATABASE_LOCATION: "<file path>"
+```
 
 ### Building the App
