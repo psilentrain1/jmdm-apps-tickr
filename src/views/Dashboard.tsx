@@ -5,6 +5,7 @@ import { Gains } from "../components/Gains.Dashboard";
 import { AAG } from "../components/AAG.Dashboard";
 import { Watched } from "../components/Watched.Dashboard";
 import { Loading } from "../components/Loading";
+import { DateRange } from "../types/component.types";
 
 const dashboardLog = log.scope("Dashboard");
 
@@ -32,7 +33,7 @@ export function Dashboard() {
     dashboardLog.verbose("setSettings");
     const defaultDateRange =
       await window.settings.getSetting("default_date_range");
-    setTickerChartTimeRange(defaultDateRange.setting_value);
+    setTickerChartTimeRange(defaultDateRange as DateRange);
   }
 
   /**

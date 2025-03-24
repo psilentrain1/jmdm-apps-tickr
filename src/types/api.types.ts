@@ -28,3 +28,7 @@ export interface Setting {
 export interface Watchlist {
   [key: string]: TickerInfo;
 }
+
+export interface SettingValue {
+  setting_value: string;
+}

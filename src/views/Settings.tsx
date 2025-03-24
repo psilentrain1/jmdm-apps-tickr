@@ -18,7 +18,7 @@ export function Settings() {
   async function getDBData() {
     settingsLog.verbose("getDBData");
     const result = await window.settings.getSetting("default_date_range");
-    setDateRange(result.setting_value);
+    setDateRange(result as DateRange);
   }
 
   /**

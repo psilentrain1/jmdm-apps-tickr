@@ -1,6 +1,7 @@
 import {
   Prices,
   Setting,
+  SettingValue,
   Ticker,
   TickerInfo,
   Watchlist,
@@ -227,7 +228,6 @@ export function setWatchlistDB(watchlist: string[]) {
   return result;
 }
 
-// FIXME: Create type for setting value
 /**
  * Retrieves a specific setting from the database.
  * @param {string} settingName - The name of the setting to retrieve from the database.
@@ -239,8 +239,8 @@ export function getSettingDB(settingName: string) {
     "SELECT setting_value FROM settings WHERE setting_key = ?;",
   );
 
-  const result = stmt.get(settingName);
-  return result;
+  const result = stmt.get(settingName) as SettingValue;
+  return result.setting_value;
 }
 
 /**
