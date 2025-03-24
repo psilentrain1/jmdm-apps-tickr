@@ -1,6 +1,9 @@
+import log from "electron-log/renderer";
 import { useStore } from "../hooks/useStore";
 import { MdCloseFullscreen, MdMenuOpen, MdMenu } from "react-icons/md";
 import { SearchBar } from "./SearchBar";
+
+const headerLog = log.scope("Header");
 
 export function Header() {
   const sidebarOpen = useStore((state) => state.sidebarOpen);
@@ -8,11 +11,13 @@ export function Header() {
   const tickrMode = useStore((state) => state.tickrMode);
   const setTickrMode = useStore((state) => state.setTickrMode);
 
+  /**
+   * Handles the Tickr mode toggle.
+   */
   async function handleTickrMode() {
+    headerLog.verbose("handleTickrMode");
     if (!tickrMode) {
-      const mode = await window.ui.setTickrMode();
       setTickrMode(true);
-      console.log(mode);
     }
   }
 

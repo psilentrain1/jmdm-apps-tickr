@@ -1,18 +1,27 @@
 import { useEffect } from "react";
+import log from "electron-log/renderer";
 import { useStore } from "../hooks/useStore";
 import { MdArrowDropDown, MdArrowDropUp, MdOpenInFull } from "react-icons/md";
 
+const tickrLog = log.scope("TickrMode");
+
 export function TickrMode() {
   const watchlist = useStore((state) => state.watchlist);
-  // const setWatchlist = useStore((state) => state.setWatchlist);
   const setTickrMode = useStore((state) => state.setTickrMode);
 
+  /**
+   * Handle exiting Tickr mode
+   */
   async function handleExitTickrMode() {
     const mode = await window.ui.exitTickrMode();
     setTickrMode(false);
-    console.log(mode);
+    tickrLog.verbose("handleExitTickrMode", { mode });
   }
 
+  /**
+   * Add animation to the ticker by duplicating the items
+   * This creates a seamless scrolling effect
+   */
   function addAnimation() {
     const ticker = document.getElementById("ticker");
 
@@ -27,11 +36,6 @@ export function TickrMode() {
     addAnimation();
   }, []);
 
-  /*   async function getWatchlist() {
-    const watchlist = await window.watchlist.getWatchlist();
-    setWatchlist(watchlist);
-    // setWatchlistTickers(Object.keys(watchlist));
-  } */
   return (
     <div className="flex h-full flex-row items-center bg-gray-900 px-4 text-gray-100">
       <div>

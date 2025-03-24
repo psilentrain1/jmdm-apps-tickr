@@ -1,8 +1,18 @@
+// FUTURE USE. NOT CURRENTLY USED.
+
 // import { Ticker } from "../types/api.types";
+import log from "electron-log/main";
+
+const apiLog = log.scope("api.utils");
 const api_key = process.env.API_KEY;
 
-// Get Ticker Info
+/**
+ * Gets information about a specific ticker from the MarketStack API.
+ * @param {string} ticker
+ * @returns
+ */
 export function getAPITickerInfo(ticker: string) {
+  apiLog.verbose("Fetching ticker info for:", ticker);
   const url = `https://api.marketstack.com/v2/tickerinfo?access_key=${api_key}&ticker=${ticker}`;
   const response = fetch(url)
     .then((res) => res.json())
@@ -14,7 +24,7 @@ export function getAPITickerInfo(ticker: string) {
       }
     })
     .catch((error) => {
-      console.error("Error fetching ticker info:", error);
+      apiLog.error("Error fetching ticker info:", error);
       //   return null;
     });
   return response;

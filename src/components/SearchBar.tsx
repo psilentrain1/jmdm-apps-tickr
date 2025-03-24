@@ -1,13 +1,22 @@
+import log from "electron-log/renderer";
 import { useNavigate } from "react-router";
 import { MdSearch } from "react-icons/md";
 import { useStore } from "../hooks/useStore";
+
+const searchLog = log.scope("SearchBar");
 
 export function SearchBar() {
   const searchInput = useStore((state) => state.searchInput);
   const setSearchInput = useStore((state) => state.setSearchInput);
   const navigate = useNavigate();
 
+  /**
+   * Handles the search input submission.
+   * If the input is not empty, it navigates to the search results page
+   * with the search input as a parameter and resets the input field.
+   */
   function handleSearch() {
+    searchLog.verbose("handleSearch");
     if (searchInput !== "") {
       navigate(`/search/${searchInput}`);
       setSearchInput("");

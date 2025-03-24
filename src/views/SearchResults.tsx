@@ -1,20 +1,31 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router";
 import toast from "react-hot-toast";
+import log from "electron-log/renderer";
 import { useStore } from "../hooks/useStore";
+
+const searchLog = log.scope("searchResults");
 
 export function SearchResults() {
   const { param } = useParams();
   const searchResults = useStore((state) => state.searchResults);
   const setSearchResults = useStore((state) => state.setSearchResults);
 
+  /**
+   * Fetch search results from the database based on the search parameter.
+   */
   async function getResults() {
-    console.log("getResults");
+    searchLog.verbose("getResults", { param });
     const results = await window.api?.search(param);
     setSearchResults(results);
   }
 
+  /**
+   * Add a ticker to the watchlist and show a success message.
+   * @param {string} ticker The ticker symbol to add to the watchlist.
+   */
   function handleAddToWatchlist(ticker: string) {
+    searchLog.verbose("handleAddToWatchlist", { ticker });
     window.watchlist.addTicker(ticker);
     toast.success(`${ticker} added to watchlist`);
   }
