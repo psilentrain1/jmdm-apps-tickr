@@ -9,6 +9,10 @@
   }
 }
 
+body {
+  background-color: rgb(17, 24, 39);
+}
+
 .tickr {
   animation: infinite-scroll 45s linear infinite;
 }
