@@ -15,9 +15,10 @@ export function Header() {
    * Handles the Tickr mode toggle.
    */
   async function handleTickrMode() {
-    headerLog.verbose("handleTickrMode");
+    const mode = await window.ui.setTickrMode();
     if (!tickrMode) {
       setTickrMode(true);
+      headerLog.verbose("handleTickrMode", { mode });
     }
   }
 
