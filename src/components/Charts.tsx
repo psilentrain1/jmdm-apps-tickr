@@ -10,12 +10,13 @@ import {
   BarElement,
   Title,
   Tooltip,
+  TooltipItem,
   Filler,
   Legend,
   Colors,
 } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
-import { Watchlist } from "../types/api.types";
+// import { Watchlist } from "../types/api.types";
 import { Prices } from "../types/api.types";
 
 ChartJS.register(
@@ -66,13 +67,13 @@ export function TickerChart({ ticker }: { ticker: string }) {
       },
       tooltip: {
         callbacks: {
-          afterTitle: function (context) {
+          afterTitle: function (context: TooltipItem<"line">[]) {
             return `${context[0].formattedValue}`;
           },
           label: function () {
             return "";
           },
-          afterBody: function (context) {
+          afterBody: function (context: TooltipItem<"line">[]) {
             return `Open: ${tickerChartData[context[0].dataIndex].open}
 High: ${tickerChartData[context[0].dataIndex].high}
 Low: ${tickerChartData[context[0].dataIndex].low}
@@ -98,7 +99,7 @@ Volume: ${tickerChartData[context[0].dataIndex].volume}`;
         data: tickerChartData.map((item) => item.close),
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
-        pointStyle: false,
+        pointRadius: 0,
       },
     ],
   };
@@ -185,7 +186,7 @@ export function Top5Chart() {
         fill: false,
         label: ticker,
         data: watchlistTickerData[`${ticker}`].map((item) => item.close),
-        pointStyle: false,
+        pointRadius: 0,
       };
     }),
   };

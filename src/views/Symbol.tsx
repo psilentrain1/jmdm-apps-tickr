@@ -1,4 +1,4 @@
-import { useEffect, Suspense } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router";
 import toast from "react-hot-toast";
 import { TickerChart } from "../components/Charts";
