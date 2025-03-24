@@ -192,15 +192,18 @@ export function getDBPrices(ticker: string, dateRange: DateRange) {
 
 /**
  * Gets the watchlist from the database.
- * @returns {Watchlist} An object containing the watchlist tickers and their information.
+ * @returns {Watchlist | undefined[]} An object containing the watchlist tickers and their information or an empty array.
  */
-export function getWatchlistDB() {
+export function getWatchlistDB(): Watchlist | undefined[] {
   dbLog.verbose("getWatchlistDB");
   const stmt = db.prepare(
     "SELECT setting_value FROM settings WHERE setting_key = 'watched_tickers';",
   );
 
   const result = stmt.get() as Setting;
+  if (result.setting_value === "[]") {
+    return [];
+  }
   const list = result.setting_value.split(",");
   const watchedTickers: Watchlist = {};
   list.forEach((ticker) => {
