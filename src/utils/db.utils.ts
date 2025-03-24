@@ -28,7 +28,7 @@ export function createDB() {
     db_value TEXT
     );`;
 
-  const query2 = `INSERT INTO db (db_key, db_value) VALUES ('db_version', '0.1');`;
+  const query2 = `INSERT INTO db (db_key, db_value) VALUES ('db_version', '0.2');`;
 
   const query3 = `CREATE TABLE ticker (
     ticker_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -57,7 +57,7 @@ export function createDB() {
     setting_value TEXT
     );`;
 
-  const query6 = `INSERT INTO settings (setting_key, setting_value) VALUES ('watched_symbols', '[]'), ('default_date_range', '3m');`;
+  const query6 = `INSERT INTO settings (setting_key, setting_value) VALUES ('watched_tickers', '[]'), ('default_date_range', '3m');`;
 
   db.prepare(query1).run();
   db.prepare(query2).run();
