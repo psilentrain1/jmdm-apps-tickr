@@ -28,7 +28,7 @@ export function createDB() {
     db_value TEXT
     );`;
 
-  const query2 = `INSERT INTO db (db_key, db_value) VALUES ('db_version', '0.1');`;
+  const query2 = `INSERT INTO db (db_key, db_value) VALUES ('db_version', '0.2');`;
 
   const query3 = `CREATE TABLE ticker (
     ticker_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -57,7 +57,7 @@ export function createDB() {
     setting_value TEXT
     );`;
 
-  const query6 = `INSERT INTO settings (setting_key, setting_value) VALUES ('watched_symbols', '[]'), ('default_date_range', '3m');`;
+  const query6 = `INSERT INTO settings (setting_key, setting_value) VALUES ('watched_tickers', '[]'), ('default_date_range', '3m');`;
 
   db.prepare(query1).run();
   db.prepare(query2).run();
@@ -192,15 +192,18 @@ export function getDBPrices(ticker: string, dateRange: DateRange) {
 
 /**
  * Gets the watchlist from the database.
- * @returns {Watchlist} An object containing the watchlist tickers and their information.
+ * @returns {Watchlist | undefined[]} An object containing the watchlist tickers and their information or an empty array.
  */
-export function getWatchlistDB() {
+export function getWatchlistDB(): Watchlist | undefined[] {
   dbLog.verbose("getWatchlistDB");
   const stmt = db.prepare(
     "SELECT setting_value FROM settings WHERE setting_key = 'watched_tickers';",
   );
 
   const result = stmt.get() as Setting;
+  if (result.setting_value === "[]") {
+    return [];
+  }
   const list = result.setting_value.split(",");
   const watchedTickers: Watchlist = {};
   list.forEach((ticker) => {
