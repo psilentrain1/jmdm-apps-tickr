@@ -1,13 +1,20 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { DateRange } from "./types/component.types";
+import {
+  AppInfo,
+  UI,
+  Settings,
+  WatchlistBridge,
+  API,
+} from "./types/bridge.types";
 
 declare global {
   interface Window {
-    appInfo: any;
-    api: any;
-    watchlist: any;
-    settings: any;
-    ui: any;
+    appInfo: AppInfo;
+    api: API;
+    watchlist: WatchlistBridge;
+    settings: Settings;
+    ui: UI;
   }
 }
 
@@ -28,7 +35,7 @@ contextBridge.exposeInMainWorld("watchlist", {
   setWatchlist: (watchlist: string[]) =>
     ipcRenderer.invoke("setWatchlist", watchlist),
   addTicker: (ticker: string) => ipcRenderer.invoke("addTicker", ticker),
-  setTickrMode: () => ipcRenderer.invoke("setTickrMode"),
+  // setTickrMode: () => ipcRenderer.invoke("setTickrMode"),
 });
 
 contextBridge.exposeInMainWorld("ui", {
