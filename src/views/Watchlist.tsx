@@ -1,8 +1,11 @@
 import { useEffect } from "react";
 import { Link } from "react-router";
 import toast from "react-hot-toast";
+import log from "electron-log/renderer";
 import { useStore } from "../hooks/useStore";
 import { MdArrowDropDown, MdArrowDropUp, MdDelete } from "react-icons/md";
+
+const watchlistLog = log.scope("Watchlist");
 
 export function Watchlist() {
   const watchlist = useStore((state) => state.watchlist);
@@ -24,21 +27,38 @@ export function WatchlistList() {
   const watchlistTickers = useStore((state) => state.watchlistTickers);
   const setWatchlistTickers = useStore((state) => state.setWatchlistTickers);
 
+  /**
+   * Fetches the watchlist from the database and updates the state.
+   */
   async function getWatchlist() {
+    watchlistLog.verbose("getWatchlist");
     const watchlist = await window.watchlist.getWatchlist();
     setWatchlist(watchlist);
     setWatchlistTickers(Object.keys(watchlist));
   }
 
+  /**
+   * Updates the watchlist in the database with the current state.
+   */
   async function updateWatchlist() {
+    watchlistLog.verbose("updateWatchlist");
     await window.watchlist.setWatchlist(watchlistTickers);
     getWatchlist();
   }
 
+  /**
+   * Handles the reordering of tickers in the watchlist when the input value changes.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The change event from the input.
+   * @param {string} ticker - The ticker symbol to reorder.
+   */
   function handleTickerReorder(
     e: React.ChangeEvent<HTMLInputElement>,
     ticker: string,
   ) {
+    watchlistLog.verbose("handleTickerReorder", {
+      ticker,
+      value: e.target.value,
+    });
     const tickers = watchlistTickers;
     const index = watchlistTickers.indexOf(ticker);
     tickers.splice(index, 1);
@@ -48,7 +68,12 @@ export function WatchlistList() {
     updateWatchlist();
   }
 
+  /**
+   * Handles moving a ticker up in the watchlist.
+   * @param {string} ticker - The ticker symbol to move up.
+   */
   function handleMoveUp(ticker: string) {
+    watchlistLog.verbose("handleMoveUp", { ticker });
     const tickers = watchlistTickers;
     const index = watchlistTickers.indexOf(ticker);
     if (index == 0) {
@@ -60,7 +85,12 @@ export function WatchlistList() {
     updateWatchlist();
   }
 
+  /**
+   * Handles moving a ticker down in the watchlist.
+   * @param {string} ticker - The ticker symbol to move down.
+   */
   function handleMoveDown(ticker: string) {
+    watchlistLog.verbose("handleMoveDown", { ticker });
     const tickers = watchlistTickers;
     const index = watchlistTickers.indexOf(ticker);
     if (index == watchlistTickers.length - 1) {
@@ -72,7 +102,12 @@ export function WatchlistList() {
     updateWatchlist();
   }
 
+  /**
+   * Handles deleting a ticker from the watchlist.
+   * @param {string} ticker - The ticker symbol to delete.
+   */
   function handleDeleteTicker(ticker: string) {
+    watchlistLog.verbose("handleDeleteTicker", { ticker });
     const tickers = watchlistTickers;
     const index = watchlistTickers.indexOf(ticker);
     tickers.splice(index, 1);
@@ -81,28 +116,10 @@ export function WatchlistList() {
     toast.success(`${ticker} removed from watchlist`);
   }
 
-  /*   function calcGainLoss(a: number, b: number) {
-    let gain: boolean;
-    if (a > b) {
-      gain = true;
-    } else {
-      gain = false;
-    }
-
-    const diff = a - b;
-    const percent = (Math.abs(a - b) / ((a + b) / 2)) * 100;
-
-    return { gain, diff, percent };
-  } */
-
   useEffect(() => {
     getWatchlist();
   }, []);
 
-  /* useEffect(() => {
-    console.log(watchlist);
-    console.log(watchlistTickers);
-  }, [watchlist]); */
   return (
     <div id="watchlist">
       {Object.keys(watchlist).map((ticker) => (

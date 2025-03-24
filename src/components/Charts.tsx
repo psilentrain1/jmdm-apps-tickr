@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import log from "electron-log/renderer";
 import { useStore } from "../hooks/useStore";
 import { DateRange } from "../types/component.types";
 import {
@@ -16,8 +17,9 @@ import {
   Colors,
 } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
-// import { Watchlist } from "../types/api.types";
 import { Prices } from "../types/api.types";
+
+const chartLog = log.scope("Charts");
 
 ChartJS.register(
   CategoryScale,
@@ -43,7 +45,11 @@ export function TickerChart({ ticker }: { ticker: string }) {
   const tickerChartData = useStore((state) => state.tickerChartData);
   const setTickerChartData = useStore((state) => state.setTickerChartData);
 
+  /**
+   * Fetches the prices for the given ticker and time range from the database
+   */
   async function getPrices() {
+    chartLog.verbose("getPrices", { ticker, tickerChartTimeRange });
     const prices = await window.api?.getPrices(ticker, tickerChartTimeRange);
     if (prices) {
       setTickerChartData(prices);
@@ -59,11 +65,9 @@ export function TickerChart({ ticker }: { ticker: string }) {
     plugins: {
       legend: {
         display: false,
-        // position: "top" as const,
       },
       title: {
         display: false,
-        // text: "Chart.js Line Chart",
       },
       tooltip: {
         callbacks: {
@@ -118,7 +122,6 @@ Volume: ${tickerChartData[context[0].dataIndex].volume}`;
               setTickerChartTimeRange(e.target.value as DateRange);
             }}
           >
-            {/* <option value="1d">1 Day</option> */}
             <option value="5d">5 Days</option>
             <option value="1m">1 Month</option>
             <option value="3m">3 Months</option>
@@ -146,8 +149,13 @@ export function Top5Chart() {
     (state) => state.setWatchlistTickerData,
   );
 
-  // FIXME: This is hacky. Getting a random ticker to use to get dates.
+  /**
+   * Fetches the prices for a random ticker (AAPL) to get the date range for the chart
+   * and sets the tickerChartData state with the prices.
+   * This is used to set the x-axis labels for the chart.
+   */
   async function getYears() {
+    chartLog.verbose("getYears", { tickerChartTimeRange });
     const ticker = "AAPL";
     const prices = await window.api?.getPrices(ticker, tickerChartTimeRange);
     if (prices) {
@@ -155,7 +163,12 @@ export function Top5Chart() {
     }
   }
 
+  /**
+   * Fetches the prices for the top 5 tickers in the watchlist and sets the watchlistTickerData state.
+   * This is used to set the y-axis data for the chart.
+   */
   async function getPrices() {
+    chartLog.verbose("getPrices");
     const data: { [key: string]: Prices[] } = {};
 
     for (const ticker of Object.keys(watchlist).slice(0, 5)) {
@@ -195,12 +208,6 @@ export function Top5Chart() {
     getPrices();
   }, [watchlist, tickerChartTimeRange]);
 
-  useEffect(() => {
-    // getPrices();
-    // console.log("watchlist", watchlist);
-    // console.log("watchlistTickerData", Object.values(watchlistTickerData)[0].map((item) => {}));
-  }, [watchlistTickerData]);
-
   return (
     <div>
       <div className="flex w-full flex-row items-center justify-end">
@@ -215,7 +222,6 @@ export function Top5Chart() {
               setTickerChartTimeRange(e.target.value as DateRange);
             }}
           >
-            {/* <option value="1d">1 Day</option> */}
             <option value="5d">5 Days</option>
             <option value="1m">1 Month</option>
             <option value="3m">3 Months</option>
@@ -238,11 +244,9 @@ export function WatchlistGains() {
     plugins: {
       legend: {
         display: false,
-        // position: "top" as const,
       },
       title: {
         display: false,
-        // text: "Chart.js Line Chart",
       },
     },
   };

@@ -1,9 +1,12 @@
 import { useEffect } from "react";
+import log from "electron-log/renderer";
 import { useStore } from "../hooks/useStore";
 import { Gains } from "../components/Gains.Dashboard";
 import { AAG } from "../components/AAG.Dashboard";
 import { Watched } from "../components/Watched.Dashboard";
 import { Loading } from "../components/Loading";
+
+const dashboardLog = log.scope("Dashboard");
 
 export function Dashboard() {
   const setWatchlist = useStore((state) => state.setWatchlist);
@@ -13,20 +16,30 @@ export function Dashboard() {
   const isLoading = useStore((state) => state.isLoading);
   const setIsLoading = useStore((state) => state.setIsLoading);
 
+  /**
+   * Fetches the watchlist from the database and updates the store.
+   */
   async function getWatchlist() {
+    dashboardLog.verbose("getWatchlist");
     const watchlist = await window.watchlist.getWatchlist();
     setWatchlist(watchlist);
-    // setWatchlistTickers(Object.keys(watchlist));
-    console.log("getWatchlist");
   }
 
+  /**
+   * Fetches the default date range setting from the database and updates the store.
+   */
   async function setSettings() {
+    dashboardLog.verbose("setSettings");
     const defaultDateRange =
       await window.settings.getSetting("default_date_range");
     setTickerChartTimeRange(defaultDateRange.setting_value);
   }
 
+  /**
+   * Initializes the dashboard by fetching the watchlist and settings.
+   */
   async function startup() {
+    dashboardLog.verbose("startup");
     setIsLoading(true);
     getWatchlist();
     setSettings();
@@ -45,7 +58,6 @@ export function Dashboard() {
         <Gains />
         <Watched />
       </div>
-      {/* <div></div> */}
     </div>
   );
 }

@@ -1,21 +1,32 @@
 import { useState, useEffect } from "react";
+import log from "electron-log/renderer";
 import { useStore } from "../hooks/useStore";
 import { DateRange } from "../types/component.types";
 
+const settingsLog = log.scope("Settings");
+
 export function Settings() {
-  // const tickerChartTimeRange = useStore((state) => state.tickerChartTimeRange);
   const setTickerChartTimeRange = useStore(
     (state) => state.setTickerChartTimeRange,
   );
 
   const [dateRange, setDateRange] = useState<DateRange>("1y");
 
+  /**
+   * Fetches the default date range from the database and sets it in the state.
+   */
   async function getDBData() {
+    settingsLog.verbose("getDBData");
     const result = await window.settings.getSetting("default_date_range");
     setDateRange(result.setting_value);
   }
 
+  /**
+   * Updates the default date range in the database and sets it in the state.
+   * @param {DateRange} dateRange The selected date range from the dropdown.
+   */
   function handleDateRangeChange(dateRange: DateRange) {
+    settingsLog.verbose("handleDateRangeChange", dateRange);
     window.settings.setSetting("default_date_range", dateRange);
     setDateRange(dateRange);
     setTickerChartTimeRange(dateRange);

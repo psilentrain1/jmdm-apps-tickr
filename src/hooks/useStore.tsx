@@ -69,6 +69,8 @@ export const useStore = create<State>((set) => ({
   setAvgPercent: (newAvgPercent) => set({ avgPercent: newAvgPercent }),
 
   // Settings
+  // Future settings can be added here
+  // For now, getting and setting directly to/from DB.
 
   // UI
   sidebarOpen: true,

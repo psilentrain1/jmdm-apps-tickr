@@ -1,7 +1,10 @@
 import { db } from "../index";
+import log from "electron-log/main";
+
+const sampleLog = log.scope("sampleData.utils");
 
 export function loadSampleData() {
-  console.log("Loading Sample Data...");
+  sampleLog.info("Loading Sample Data...");
 
   const tickers = `INSERT INTO ticker (ticker, ticker_name, industry, sector, description) VALUES 
 ('AAPL', 'Apple Inc.', 'Consumer Electronics', 'Technology', 'Designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories'),
@@ -12310,5 +12313,5 @@ export function loadSampleData() {
 
   db.prepare(tickers).run();
   db.prepare(data).run();
-  console.log("Loaded Sample Data");
+  sampleLog.info("Loaded Sample Data");
 }

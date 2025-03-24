@@ -1,10 +1,13 @@
 import { useEffect } from "react";
 import { useParams } from "react-router";
 import toast from "react-hot-toast";
+import log from "electron-log/renderer";
 import { TickerChart } from "../components/Charts";
 import { Loading } from "../components/Loading";
 import { useStore } from "../hooks/useStore";
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
+
+const symbolLog = log.scope("Symbol");
 
 export function Ticker() {
   const { ticker } = useParams();
@@ -12,30 +15,22 @@ export function Ticker() {
   const setTickerInfo = useStore((state) => state.setTickerInfo);
   const isLoading = useStore((state) => state.isLoading);
   const setIsLoading = useStore((state) => state.setIsLoading);
-  // const gainLoss = useStore((state) => state.gainLoss);
-  // const setGainLoss = useStore((state) => state.setGainLoss);
 
-  /* function calcGainLoss(a: number, b: number) {
-    let gain: boolean;
-    if (a > b) {
-      gain = true;
-    } else {
-      gain = false;
-    }
-
-    const diff = a - b;
-    const percent = (Math.abs(a - b) / ((a + b) / 2)) * 100;
-
-    return { gain, diff, percent };
-  } */
-
+  /**
+   * Fetches ticker information from the database and updates the store.
+   */
   async function getTickerInfo() {
+    symbolLog.verbose("getTickerInfo", ticker);
     setIsLoading(true);
     setTickerInfo(await window.api?.getTickerInfo(ticker));
     setIsLoading(false);
   }
 
+  /**
+   * Adds the ticker to the watchlist and shows a success message.
+   */
   function handleAddToWatchlist() {
+    symbolLog.verbose("handleAddToWatchlist", ticker);
     window.watchlist.addTicker(ticker);
     toast.success(`${ticker} added to watchlist`);
   }
@@ -43,10 +38,6 @@ export function Ticker() {
   useEffect(() => {
     getTickerInfo();
   }, []);
-
-  /*  useEffect(() => {
-    setGainLoss(calcGainLoss(tickerInfo[2].close, tickerInfo[1].close));
-  }, [tickerInfo]); */
 
   return isLoading ? (
     <Loading />

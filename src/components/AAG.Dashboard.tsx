@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { Link } from "react-router";
+import log from "electron-log/renderer";
 import { useStore } from "../hooks/useStore";
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
+
+const aagLog = log.scope("AAG.Dashboard");
 
 export function AAG() {
   const watchlist = useStore((state) => state.watchlist);
@@ -26,7 +29,14 @@ export function AAGData() {
   const setAvgGainLoss = useStore((state) => state.setAvgGainLoss);
   const setAvgPercent = useStore((state) => state.setAvgPercent);
 
+  /**
+   * Calculates the average gain/loss and percentage change for the watchlist.
+   * It iterates through the watchlist, summing the gain/loss and percentage change
+   * for each ticker, and then divides by the number of tickers to get the average.
+   * The results are stored in the state using setAvgGainLoss and setAvgPercent.
+   */
   function getAverages() {
+    aagLog.verbose("getAverages");
     const gainLossArr: number[] = [];
     const percentArr: number[] = [];
     Object.keys(watchlist).map((ticker) => {
@@ -39,7 +49,14 @@ export function AAGData() {
     setAvgPercent(percentSum / percentArr.length);
   }
 
+  /**
+   * Calculates the top 5 movers in the watchlist based on their percentage change.
+   * It iterates through the watchlist, creating an array of ticker symbols and their
+   * corresponding percentage changes. The array is then sorted in descending order
+   * and the top 5 movers are stored in the state using setTopMovers.
+   */
   function getMovers() {
+    aagLog.verbose("getMovers");
     const percentages: [string, number][] = [];
     Object.keys(watchlist).map((ticker) => {
       let val = 0;
@@ -49,8 +66,6 @@ export function AAGData() {
     percentages.sort((a, b) => b[1] - a[1]);
     setTopMovers(percentages.slice(0, 5));
   }
-
-  // Average Change points and percentage
 
   useEffect(() => {
     getMovers();

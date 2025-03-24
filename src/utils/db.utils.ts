@@ -1,7 +1,3 @@
-// import { app } from "electron";
-// import fs from "fs";
-// import path from "path";
-// import sqlite from "better-sqlite3";
 import {
   Prices,
   Setting,
@@ -10,16 +6,21 @@ import {
   Watchlist,
 } from "../types/api.types";
 import { dbLoc, db } from "../index";
-// import { getAPITickerInfo } from "./api.utils";
 import { DateRange } from "../types/component.types";
+import log from "electron-log/main";
 
+const dbLog = log.scope("db.utils");
+
+/**
+ * Creates a new Database file in the database location
+ * and initializes the necessary tables and default values.
+ */
 export function createDB() {
   //   const filepath = path.join(app.getPath("appData"), "Tickr");
   //   fs.mkdirSync(filepath, { recursive: true });
   //   fs.closeSync(fs.openSync(dbLoc, "w"));
 
   db.pragma("journal_mode = WAL");
-  console.log("New Database: ", db);
 
   const query1 = `CREATE TABLE db (
     db_key TEXT PRIMARY KEY NOT NULL,
@@ -63,14 +64,20 @@ export function createDB() {
   db.prepare(query4).run();
   db.prepare(query5).run();
   db.prepare(query6).run();
-  console.log("Database created at: ", dbLoc);
+  dbLog.info("Database created at: ", dbLoc);
 }
 
-// TODO: updateDB()
+// FUTURE: updateDB()
 // Maybe check against DB version and check tables
 
-// Get Ticker Info
+/**
+ * Fetches ticker information from the database.
+ * FUTURE: If the ticker is not found, it can be fetched from an API.
+ * @param {string} symbol
+ * @returns {TickerInfo | null} Returns ticker information or null if not found.
+ */
 export function getTickerInfo(symbol: string): TickerInfo | null {
+  dbLog.verbose("getTickerInfo: ", symbol);
   const stmtTicker = db.prepare(`SELECT * FROM ticker WHERE ticker = ?;`);
   const stmtLastClose = db.prepare(
     `SELECT * FROM (SELECT * FROM data_cache WHERE ticker = ? ORDER BY date DESC LIMIT 2) ORDER BY date ASC;`,
@@ -98,8 +105,13 @@ export function getTickerInfo(symbol: string): TickerInfo | null {
   return [ticker, lastClose[1], gain, diff, percent];
 }
 
-// Add Ticker Info
+/**
+ * Adds ticker information to the database.
+ * @param {Ticker} tickerInfo - Ticker information to be added to the database.
+ * @returns
+ */
 export function addTickerInfo(tickerInfo: Ticker) {
+  dbLog.verbose("addTickerInfo: ", tickerInfo);
   const query = `INSERT INTO ticker (ticker, ticker_type, ticker_name, industry, sector, description, cached_date) VALUES (?, ?, ?, ?, ?, ?, ?);`;
   const result = db
     .prepare(query)
@@ -116,7 +128,13 @@ export function addTickerInfo(tickerInfo: Ticker) {
   return result;
 }
 
+/**
+ * Searches the database for tickers based on a search parameter.
+ * @param {string} searchParam - The search parameter to filter tickers by ticker, name, industry, or sector.
+ * @returns {string[]} An array of ticker information matching the search parameter.
+ */
 export function searchDB(searchParam: string) {
+  dbLog.verbose("searchDB: ", searchParam);
   const stmt = db.prepare(
     "SELECT * FROM ticker WHERE ticker LIKE ? OR ticker_name LIKE ? OR industry LIKE ? OR sector LIKE ?;",
   );
@@ -130,7 +148,14 @@ export function searchDB(searchParam: string) {
   return result;
 }
 
+/**
+ * Gets prices from the database for a specific ticker and date range.
+ * @param {string} ticker - The ticker symbol for which to fetch prices.
+ * @param {DateRange} dateRange - The date range for which to fetch prices (e.g., "5d", "1m", etc.).
+ * @returns {Prices[]} An array of prices for the specified ticker and date range.
+ */
 export function getDBPrices(ticker: string, dateRange: DateRange) {
+  dbLog.verbose("getDBPrices: ", ticker, dateRange);
   let returnLimit: number;
   switch (dateRange) {
     case "1d":
@@ -164,8 +189,12 @@ export function getDBPrices(ticker: string, dateRange: DateRange) {
   return result;
 }
 
-// Watchlist
+/**
+ * Gets the watchlist from the database.
+ * @returns {Watchlist} An object containing the watchlist tickers and their information.
+ */
 export function getWatchlistDB() {
+  dbLog.verbose("getWatchlistDB");
   const stmt = db.prepare(
     "SELECT setting_value FROM settings WHERE setting_key = 'watched_tickers';",
   );
@@ -182,7 +211,14 @@ export function getWatchlistDB() {
   return watchedTickers;
 }
 
+/**
+ * Sets the watchlist in the database.
+ * This will overwrite the existing watchlist with the new one provided.
+ * @param {string[]} watchlist - An array of ticker symbols to set as the watchlist in the database.
+ * @returns
+ */
 export function setWatchlistDB(watchlist: string[]) {
+  dbLog.verbose("setWatchlistDB: ", watchlist);
   const stmt = db.prepare(
     "UPDATE settings SET setting_value = ? WHERE setting_key = 'watched_tickers';",
   );
@@ -191,8 +227,14 @@ export function setWatchlistDB(watchlist: string[]) {
   return result;
 }
 
-// Settings
+// FIXME: Create type for setting value
+/**
+ * Retrieves a specific setting from the database.
+ * @param {string} settingName - The name of the setting to retrieve from the database.
+ * @returns Setting Value
+ */
 export function getSettingDB(settingName: string) {
+  dbLog.verbose("getSettingDB: ", settingName);
   const stmt = db.prepare(
     "SELECT setting_value FROM settings WHERE setting_key = ?;",
   );
@@ -201,7 +243,14 @@ export function getSettingDB(settingName: string) {
   return result;
 }
 
+/**
+ * Updates a specific setting in the database.
+ * @param {string} settingName The name of the setting to update in the database.
+ * @param {string} settingValue The new value to set for the specified setting in the database.
+ *
+ */
 export function setSettingDB(settingName: string, settingValue: string) {
+  dbLog.verbose("setSettingDB: ", settingName, settingValue);
   const stmt = db.prepare(
     "UPDATE settings SET setting_value = ? WHERE setting_key = ?;",
   );

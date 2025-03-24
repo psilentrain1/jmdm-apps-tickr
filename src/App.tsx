@@ -4,15 +4,20 @@ import { useStore } from "./hooks/useStore";
 import { Header } from "./components/Header";
 import { Sidebar } from "./components/Sidebar";
 import { Toaster } from "react-hot-toast";
+import log from "electron-log/renderer";
+
+const appLog = log.scope("App");
 
 export default function App() {
   const sidebarOpen = useStore((state) => state.sidebarOpen);
   useEffect(() => {
     const contentArea = document.getElementById("contentArea");
     if (sidebarOpen) {
+      appLog.verbose("Sidebar open.");
       contentArea.classList.add("ml-48");
       contentArea.classList.remove("ml-16");
     } else if (!sidebarOpen) {
+      appLog.verbose("Sidebar closed.");
       contentArea.classList.remove("ml-48");
       contentArea.classList.add("ml-16");
     }
