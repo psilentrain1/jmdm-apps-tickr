@@ -1,7 +1,7 @@
-import { app } from "electron";
-import fs from "fs";
-import path from "path";
-import sqlite from "better-sqlite3";
+// import { app } from "electron";
+// import fs from "fs";
+// import path from "path";
+// import sqlite from "better-sqlite3";
 import {
   Prices,
   Setting,

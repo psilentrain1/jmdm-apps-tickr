@@ -1,4 +1,4 @@
-import { useEffect, Suspense } from "react";
+import { useEffect } from "react";
 import { useStore } from "../hooks/useStore";
 import { Gains } from "../components/Gains.Dashboard";
 import { AAG } from "../components/AAG.Dashboard";

@@ -1,4 +1,4 @@
-import { Ticker } from "../types/api.types";
+// import { Ticker } from "../types/api.types";
 const api_key = process.env.API_KEY;
 
 // Get Ticker Info
