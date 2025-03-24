@@ -10,6 +10,7 @@ import {
   BarElement,
   Title,
   Tooltip,
+  TooltipItem,
   Filler,
   Legend,
   Colors,
@@ -66,13 +67,13 @@ export function TickerChart({ ticker }: { ticker: string }) {
       },
       tooltip: {
         callbacks: {
-          afterTitle: function (context) {
+          afterTitle: function (context: TooltipItem<"line">[]) {
             return `${context[0].formattedValue}`;
           },
           label: function () {
             return "";
           },
-          afterBody: function (context) {
+          afterBody: function (context: TooltipItem<"line">[]) {
             return `Open: ${tickerChartData[context[0].dataIndex].open}
 High: ${tickerChartData[context[0].dataIndex].high}
 Low: ${tickerChartData[context[0].dataIndex].low}
