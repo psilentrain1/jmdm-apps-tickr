@@ -53,6 +53,8 @@ if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
+let onTop = false;
+
 const isMac = process.platform === "darwin";
 
 const template: MenuItemConstructorOptions[] = [
@@ -120,6 +122,14 @@ const template: MenuItemConstructorOptions[] = [
       { role: "zoomOut" as const },
       { type: "separator" as const },
       { role: "togglefullscreen" as const },
+      {
+        label: "Always on Top",
+        type: "checkbox",
+        checked: onTop,
+        click: () => {
+          handleOnTop();
+        },
+      },
     ],
   },
   {
@@ -345,4 +355,12 @@ function startUpTasks() {
   }
 
   log.info("Start up tasks complete");
+}
+
+function handleOnTop() {
+  if (mainWindow) {
+    onTop = !onTop;
+    mainWindow.setAlwaysOnTop(onTop);
+    log.verbose("handleOnTop", onTop);
+  }
 }
