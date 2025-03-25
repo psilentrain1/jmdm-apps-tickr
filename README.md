@@ -102,3 +102,16 @@ DATABASE_LOCATION: "<file path>"
 ```
 
 ### Building the App
+
+To build an executable, run one of the following:
+
+```shell
+# Using npm
+npm run package
+
+# Using yarn
+yarn run package
+
+# Using pnpm
+pnpm run package
+```
