@@ -91,6 +91,10 @@ typings/
 # Electron-Forge
 out/
 
+# Dev DB
+store/
+
 # Misc
 mystuff/
 .vscode/
+.mypy_cache/
