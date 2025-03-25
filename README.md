@@ -78,7 +78,7 @@ yarn install
 pnpm install
 ```
 
-### Changing the Database Location
+### Database Location
 
 By default, the database will be initialized in one of the following directories:
 
@@ -93,12 +93,6 @@ $XDG_CONFIG_HOME/Tickr/tickr.db
 
 # macOS
 ~/Library/Application Support/Tickr/tickr.db
-```
-
-To change the location of the database, create a `.env` file in the root of the project and add the following line:
-
-```
-DATABASE_LOCATION: "<file path>"
 ```
 
 ### Building the App
